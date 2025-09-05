@@ -1,0 +1,84 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum QuestionType {
+  SHORT_ANSWER
+  LONG_ANSWER
+  MULTIPLE_CHOICE
+  CHECKBOX
+  DROPDOWN
+  FILE_UPLOAD
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  forms     Form[]
+  responses Response[]
+  createdAt DateTime @default(now())
+}
+
+model Form {
+  id          String     @id @default(cuid())
+  title       String
+  description String?
+  ownerId     String
+  owner       User       @relation(fields: [ownerId], references: [id])
+  questions   Question[]
+  responses   Response[]
+  createdAt   DateTime   @default(now())
+}
+
+model Question {
+  id        String       @id @default(cuid())
+  text      String
+  type      QuestionType
+  formId    String
+  form      Form          @relation(fields: [formId], references: [id])
+  options   Option[]      // used for MULTIPLE_CHOICE / CHECKBOX / DROPDOWN
+  answers   Answer[]
+  required  Boolean       @default(false)
+  order     Int
+}
+
+model Option {
+  id          String    @id @default(cuid())
+  text        String
+  questionId  String
+  question    Question  @relation(fields: [questionId], references: [id])
+  // optionally: order Int
+}
+
+model Response {
+  id        String    @id @default(cuid())
+  formId    String
+  form      Form      @relation(fields: [formId], references: [id])
+  userId    String?   // anonymous if null
+  user      User?     @relation(fields: [userId], references: [id])
+  answers   Answer[]
+  createdAt DateTime  @default(now())
+}
+
+model Answer {
+  id         String     @id @default(cuid())
+  responseId String
+  response   Response   @relation(fields: [responseId], references: [id])
+  questionId String
+  question   Question   @relation(fields: [questionId], references: [id])
+  text       String?    // free text or file URL
+  optionIds  String[]   // selected option ids (for choices)
+}

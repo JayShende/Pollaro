@@ -1,1 +1,14 @@
-console.log("Hello Ji");
+import express from "express"
+import "dotenv/config";
+import routes from "./routes"
+const app=express();
+app.use(express.json());
+
+app.use("/api/v1",routes)
+// .env varibales
+const {PORT}=process.env
+
+app.listen(Number(PORT), () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+});
+
