@@ -1,8 +1,4 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+// Prisma schema for Pollaro
 
 generator client {
   provider = "prisma-client-js"
@@ -13,6 +9,9 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+//
+// NextAuth models
+//
 model User {
   id            String          @id @default(cuid())
   name          String?
@@ -20,9 +19,12 @@ model User {
   emailVerified DateTime?
   image         String?
   accounts      Account[]
- 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+
+  forms         Form[]
+  responses     Response[]
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 
 model Account {
@@ -37,11 +39,106 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
- 
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
- 
+
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
- 
+
   @@id([provider, providerAccountId])
+}
+
+//
+// Enums
+//
+enum QuestionType {
+  SHORT_ANSWER
+  LONG_ANSWER
+  MULTIPLE_CHOICE
+  CHECKBOX
+  DROPDOWN
+  FILE_UPLOAD
+}
+
+//
+// Pollaro models
+//
+model Form {
+  id          String     @id @default(cuid())
+  title       String
+  description String?
+  ownerId     String
+  owner       User       @relation(fields: [ownerId], references: [id])
+  questions   Question[]
+  responses   Response[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@index([ownerId])
+}
+
+model Question {
+  id        String     @id @default(cuid())
+  text      String
+  type      QuestionType
+  formId    String
+  form      Form       @relation(fields: [formId], references: [id], onDelete: Cascade)
+  options   Option[]
+  answers   Answer[]
+  required  Boolean    @default(false)
+  order     Int
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  @@index([formId])
+}
+
+model Option {
+  id          String    @id @default(cuid())
+  text        String
+  questionId  String
+  question    Question  @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  answers     AnswerOption[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Response {
+  id        String    @id @default(cuid())
+  formId    String
+  form      Form      @relation(fields: [formId], references: [id], onDelete: Cascade)
+  userId    String?   // anonymous if null
+  user      User?     @relation(fields: [userId], references: [id])
+  answers   Answer[]  // ✅ no onDelete here
+  createdAt DateTime  @default(now())
+
+  @@index([formId])
+  @@index([userId])
+}
+
+model Answer {
+  id         String         @id @default(cuid())
+  responseId String
+  response   Response       @relation(fields: [responseId], references: [id], onDelete: Cascade)
+  questionId String
+  question   Question       @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  text       String?
+  files      String[]       @default([])
+  options    AnswerOption[]
+
+  createdAt  DateTime @default(now())
+}
+
+model AnswerOption {
+  id        String  @id @default(cuid())
+  answerId  String
+  optionId  String
+
+  answer    Answer  @relation(fields: [answerId], references: [id], onDelete: Cascade)
+  option    Option  @relation(fields: [optionId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([answerId, optionId])
 }
