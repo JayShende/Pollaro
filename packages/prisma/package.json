@@ -7,10 +7,11 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@prisma/client": "6.15.0",
     "@repo/typescript-config": "workspace:*",
     "prisma": "^6.15.0"
   },
-  "exports":{
-    "./client":"./index.ts"
+  "exports": {
+    "./client": "./index.ts"
   }
 }
