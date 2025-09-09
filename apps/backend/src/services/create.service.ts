@@ -1,5 +1,5 @@
 import { client } from "@repo/db/client";
-import { handlePrismaError } from "../utils/prismaErrorHandler";
+
 
 interface createFormData {
   title: string;
@@ -13,14 +13,10 @@ interface createFormData {
  */
 
 const createForm = async (data: createFormData) => {
-  try {
-    const form = await client.form.create({
-      data: data,
-    });
-    return form;
-  } catch (error) {
-    handlePrismaError(error);
-  }
+  const form = await client.form.create({
+    data: data,
+  });
+  return form;
 };
 
 export default {

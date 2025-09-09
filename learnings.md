@@ -12,5 +12,8 @@
      * Extrach the Req body, Params, Query parameter
      * Send the Response - Success or Failure Response
      * Handle the Error thrown by the Service inside the `Try()catch{}` Block
-   * Idelly There Should Be No Try Catch Block Inside an **Service Function** 
-   *
+   * Idelly There Should Be No Try Catch Block Inside an **Service Function**
+   * 
+4. Service
+   * The Service Dont Have any Try Ctach block it throws only two types of error APi Error - that we throw expliacyly and another is the error that may cause at server side during the prisma operation
+5. The **Delete Request** Should Not Have a Body Use ***params*** in an Delete Request
