@@ -4,17 +4,28 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-interface AuthRequest extends Request {
-  user?: string | JwtPayload;
+export interface UserPayload {
+  userId: string;
+  // add other properties if needed
 }
 
-const authMiddleware = (req: AuthRequest, res: Response, next: NextFunction) => {
+interface AuthRequest extends Request {
+  user?: UserPayload;
+}
+
+const authMiddleware = (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const authHeader = req.headers.authorization;
 
     // Validate header
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return res.status(401).json({ msg: "Authorization token missing or malformed" });
+      return res
+        .status(401)
+        .json({ msg: "Authorization token missing or malformed" });
     }
 
     const token = authHeader.split(" ")[1];
@@ -31,8 +42,9 @@ const authMiddleware = (req: AuthRequest, res: Response, next: NextFunction) => 
     }
 
     // Verify token
-    const decoded = jwt.verify(token, jwtSecret);
-    req.user = decoded;
+    const decoded = jwt.verify(token, jwtSecret) as JwtPayload & UserPayload;
+
+    req.user = { userId: decoded.userId };
 
     next();
   } catch (err) {

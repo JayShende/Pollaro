@@ -4,6 +4,8 @@ const router: Router = express.Router();
 
 import appRoute from "./app.route";
 import formRoute from "./create.route";
+import questionRoute from "./question.route";
+
 const defaultRoutes = [
   {
     path: "/app",
@@ -12,6 +14,10 @@ const defaultRoutes = [
   {
     path: "/form",
     route: formRoute,
+  },
+  {
+    path: "/question",
+    route: questionRoute,
   },
 ];
 

@@ -1,5 +1,5 @@
 import {PrismaClient} from "@prisma/client"
-
+import { Prisma } from "@prisma/client";
 // declare global{
 //   var prisma:PrismaClient| undefined;
 // }
@@ -7,3 +7,4 @@ import {PrismaClient} from "@prisma/client"
 // if (process.env.NODE_ENV !== 'production') globalThis.prisma = client
 
 export const client =  new PrismaClient();
+export  {Prisma};
