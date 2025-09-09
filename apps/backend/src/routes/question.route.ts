@@ -39,4 +39,14 @@ router.post(
   questionController.addFileUplaod
 );
 
+// Delete Question
+router.delete(
+  "/delete/:formId/:questionId",
+  validate(questionValidation.deleteQuestion),
+  questionController.deleteQuestion
+);
+
+// Edit Question
+//  The Edit Question Will Also Have The EndPoint to Update / Delete the Options
+
 export default router;

@@ -23,6 +23,11 @@ interface optionsProps {
   options: option[];
 }
 
+interface deleteQuestionProps {
+  questionId: string;
+  formId: string;
+}
+
 /**
  * Add an Question of Type Short Answer
  */
@@ -254,11 +259,60 @@ const addFileUplaod = async (data: AnswerProps, userId: string) => {
   }
 };
 
+//  Delete An Question Given the Form ID and The Question ID
+
+const deleteQuestion = async (data: deleteQuestionProps, userId: string) => {
+  // check if the Form exist or not
+  const checkForm = await client.form.findUnique({
+    where: {
+      id: data.formId,
+    },
+  });
+
+  if (checkForm === null) {
+    throw new ApiError(httpStatus.NOT_FOUND, "Form Not Found");
+  }
+  //  check if user owns the Form or Not
+  if (checkForm.ownerId != userId) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, "The User Dont Own The Form");
+  }
+
+  // check if the Question Beleong to the Form
+
+  const checkQuestion = await client.question.findUnique({
+    where: {
+      id: data.questionId,
+    },
+  });
+
+  if (checkQuestion?.formId != data.formId) {
+    throw new ApiError(
+      httpStatus.NOT_FOUND,
+      "Question Not Found - Question Dont Belong to the Form "
+    );
+  }
+
+  //  Proceed with the Question Deletion
+
+  const deleteQuestion = await client.question.delete({
+    where: {
+      id: data.questionId,
+    },
+  });
+  return deleteQuestion;
+
+  // handlePrismaError(error);
+};
+
 export default {
+  // add questions
   addShortAnswer,
   addLongAnswer,
   addMultipleChoice,
   addCheckBox,
   addDropDown,
   addFileUplaod,
+
+  // delete an Question By Id
+  deleteQuestion,
 };

@@ -11,14 +11,14 @@ export const validate =
         query: req.query,
         params: req.params,
       });
-
+      console.log(req.query);
       next();
     } catch (err) {
       if (err instanceof ZodError) {
         return res.status(400).json({
           success: false,
           message: "Validation Error",
-          errors: err.issues.map(issue => issue.message), // ✅ only messages
+          errors: err.issues.map((issue) => issue.message), // ✅ only messages
         });
       }
 

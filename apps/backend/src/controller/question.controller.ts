@@ -115,6 +115,37 @@ const addFileUplaod = async (req: Request, res: Response) => {
   return response(res, HttpStatus.OK, "Question Added Successfully", form);
 };
 
+// Delete an Question
+
+const deleteQuestion = async (req: Request, res: Response) => {
+  const { questionId, formId } = req.params;
+  if (!questionId) {
+    return response(res, HttpStatus.BAD_REQUEST, "Not Question ID Provided");
+  }
+  if (!formId) {
+    return response(res, HttpStatus.BAD_REQUEST, "Not formId Provided");
+  }
+  const data = {
+    questionId,
+    formId,
+  };
+  try {
+    const question =await questionService.deleteQuestion(data, req.user?.userId!);
+    return response(
+      res,
+      HttpStatus.OK,
+      "Question Delete SuccessFully",
+      question
+    );
+  } catch (err) {
+    return response(
+      res,
+      HttpStatus.BAD_REQUEST,
+      "Failed to Delete The Question"
+    );
+  }
+};
+
 export default {
   addShortAnswer,
   addLongAnswer,
@@ -122,4 +153,6 @@ export default {
   addCheckBox,
   addDropDown,
   addFileUplaod,
+
+  deleteQuestion,
 };

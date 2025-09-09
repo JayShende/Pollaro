@@ -7,7 +7,7 @@ export function handlePrismaError(error: unknown): never {
   if (error instanceof ApiError) {
     throw error;
   }
-
+console.log("here inside");
   // Handle known Prisma errors
   if (error instanceof Prisma.PrismaClientKnownRequestError) {
     switch (error.code) {

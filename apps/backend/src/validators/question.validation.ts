@@ -156,6 +156,13 @@ const fileUpload = z.object({
   }),
 });
 
+const deleteQuestion = z.object({
+  params: z.object({
+    formId: z.string({ message: "FormId Should be a String" }),
+    questionId: z.string({ message: "QuestionID Should be a String" }),
+  }),
+});
+
 export default {
   shortAnswer,
   longAnswer,
@@ -163,4 +170,5 @@ export default {
   checkBox,
   dropDown,
   fileUpload,
+  deleteQuestion,
 };
