@@ -5,6 +5,7 @@ const router: Router = express.Router();
 import appRoute from "./app.route";
 import formRoute from "./form.route";
 import questionRoute from "./question.route";
+import responseRoute from "./response.route";
 
 const defaultRoutes = [
   {
@@ -18,6 +19,10 @@ const defaultRoutes = [
   {
     path: "/question",
     route: questionRoute,
+  },
+  {
+    path: "/response",
+    route: responseRoute,
   },
 ];
 

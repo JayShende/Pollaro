@@ -1,5 +1,4 @@
 import { client } from "@repo/db/client";
-import { handlePrismaError } from "../utils/prismaErrorHandler";
 import ApiError from "../utils/api-error";
 import httpStatus from "http-status";
 interface AnswerProps {
