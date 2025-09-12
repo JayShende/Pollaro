@@ -28,20 +28,21 @@ const UserAvatar = ({ name, email, image, initials }: UserAvatarProps) => {
       <PopoverTrigger>
         <div>
           {image == undefined ? (
-            <span className="bg-muted flex size-full items-center justify-center rounded-full">
+            <span className="flex size-10 items-center justify-center rounded-full bg-indigo-50 text-indigo-600 font-medium">
               {initials}
             </span>
           ) : (
             <Image
               src={image}
               alt="profile-pic"
-              width={45}
-              height={45}
-              className="rounded-full ring-2 ring-gray-600 sm:w-8 w-8 sm:h-8 h-8 "
+              width={40}
+              height={40}
+              className="rounded-full ring-2 ring-indigo-600 p-0.5 sm:w-9 sm:h-9 w-8 h-8"
             />
           )}
         </div>
       </PopoverTrigger>
+
       <PopoverContent className=" w-fit mr-2 mt-1">
         <div className={cn("flex flex-col gap-y-2", interFont.className)}>
           <div className="mx-2 flex items-center gap-x-2">

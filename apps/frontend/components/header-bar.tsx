@@ -34,7 +34,7 @@ const HeaderBar = async () => {
     return;
   }
   return (
-    <div className="bg-indigo-50 h-16 px-6 py-2 flex justify-between items-center">
+    <div className="bg-indigo-50 h-16 px-6 py-2 flex justify-between items-center sticky top-0 z-50">
       <div className="flex  items-center">
         <Image
           src="https://d2umaa5a4grwi8.cloudfront.net/projects/pollaro/assets/logo_2.png"

@@ -1,7 +1,9 @@
+import DashboardMain from "@/app/pages/dashboard";
+
 const DashBoardPage = () => {
   return (
-    <div>
-      Hello
+    <div className="w-full h-full px-24 py-5 ">
+      <DashboardMain/>
     </div>
   )
 };
