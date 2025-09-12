@@ -55,7 +55,23 @@ const getForm = async (formId: string, userId: string) => {
   return form;
 };
 
+const getFormMetaData = async (userId: string) => {
+  const metaData = client.form.findMany({
+    where: {
+      ownerId: userId,
+    },
+    select: {
+      id: true,
+      title: true,
+      description: true,
+      updatedAt: true,
+    },
+  });
+  return metaData;
+};
+
 export default {
   createForm,
-  getForm
+  getForm,
+  getFormMetaData
 };

@@ -34,7 +34,25 @@ const getForm = async (req: Request, res: Response) => {
   }
 };
 
+const getFormMetaData = async (req: Request, res: Response) => {
+  try {
+    const metaData = await formService.getFormMetaData(req.user?.userId!);
+    return response(res, HttpStatus.OK, "Form fetched SuccessFully", metaData);
+  } catch (error) {
+    if (error instanceof ApiError) {
+      return response(res, error.statusCode, error.message, null);
+    }
+    return response(
+      res,
+      HttpStatus.INTERNAL_SERVER_ERROR,
+      "Internal Server Error",
+      null
+    );
+  }
+};
+
 export default {
   create,
-  getForm
+  getForm,
+  getFormMetaData
 };

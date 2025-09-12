@@ -41,13 +41,15 @@ const FormCard = ({ formId, title, description, updatedAt }: FormCardProps) => {
   //   temp var
   const isPublic = true;
   return (
-    <Card className={cn("w-full h-52", interFont.className)}>
+    <Card className={cn("w-full h-64", interFont.className)}>
       <CardHeader>
         <CardTitle className="text-lg font-semibold text-indigo-500">
           {title}
         </CardTitle>
         <CardDescription className="text-gray-900 text-xs">
-          {description}
+          {description.length > 40
+            ? `${description.slice(0, 40)}...`
+            : description}
         </CardDescription>
       </CardHeader>
       <CardContent className="w-full h-full flex items-center justify-center">
@@ -72,7 +74,7 @@ const FormCard = ({ formId, title, description, updatedAt }: FormCardProps) => {
                 </button>
               </TooltipTrigger>
               <TooltipContent className="rounded-md bg-gray-900 text-white px-3 py-1.5 text-xs shadow-md">
-                <p>Accepting Response</p>
+                <p>Not Accepting Response</p>
               </TooltipContent>
             </Tooltip>
           ) : (
@@ -83,7 +85,7 @@ const FormCard = ({ formId, title, description, updatedAt }: FormCardProps) => {
                 </button>
               </TooltipTrigger>
               <TooltipContent className="rounded-md bg-gray-900 text-white px-3 py-1.5 text-xs shadow-md">
-                <p>Not Accepting Response</p>
+                <p>Accepting Response</p>
               </TooltipContent>
             </Tooltip>
           )}

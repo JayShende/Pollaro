@@ -14,5 +14,6 @@ router.post(
 );
 
 router.get("/getForm/:formId", formController.getForm);
+router.get("/", formController.getFormMetaData);
 
 export default router;

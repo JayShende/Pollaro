@@ -7,7 +7,7 @@ import { IoAdd } from "react-icons/io5";
 
 const CreateNewFormCard = () => {
   return (
-    <Card className="w-full h-52">
+    <Card className="w-full h-64">
       <CardContent className="w-full h-full flex items-center justify-center">
         <IoAdd className="text-7xl font-medium text-indigo-600" />
       </CardContent>
