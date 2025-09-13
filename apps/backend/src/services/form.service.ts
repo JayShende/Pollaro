@@ -44,6 +44,12 @@ const getForm = async (formId: string, userId: string) => {
       id: formId,
     },
     include: {
+      owner: {
+        select: {
+          name: true,
+          email: true,
+        },
+      },
       questions: {
         include: {
           options: true,
@@ -73,5 +79,5 @@ const getFormMetaData = async (userId: string) => {
 export default {
   createForm,
   getForm,
-  getFormMetaData
+  getFormMetaData,
 };

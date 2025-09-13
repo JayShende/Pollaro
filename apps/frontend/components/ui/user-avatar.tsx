@@ -6,7 +6,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Button } from "./button";
 import { cn } from "@/lib/utils";
 import { interFont } from "@/fonts/font";
 import { Badge } from "./badge";

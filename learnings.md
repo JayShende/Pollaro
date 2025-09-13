@@ -18,7 +18,14 @@
    * The Service Dont Have any Try Ctach block it throws only two types of error APi Error - that we throw expliacyly and another is the error that may cause at server side during the prisma operation
 5. The **Delete Request** Should Not Have a Body Use ***params*** in an Delete Request
 
-
 ## Frontend Learings
 
 1. Layout how the Layout is made ie the space between haeder and main , where the header has a fixed posostion and an fixed height the main takes the entire remaining height
+
+
+## 🔹 4. Summary
+
+* ✅ **Server → Client** is allowed.
+* ❌ **Client → Server** is NOT allowed.
+* ✅ Server components **can be async** (and usually are).
+* ❌ Client components **cannot** be async (must fetch via hooks like `useEffect` or react-query).

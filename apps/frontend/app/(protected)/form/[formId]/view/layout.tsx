@@ -1,0 +1,15 @@
+import { ReactNode } from "react";
+
+interface LayoutProps {
+  children: ReactNode;
+}
+
+const Layout = ({ children }: LayoutProps) => {
+  return (
+    <div className="w-screen h-screen bg-[#EFEFEF]">
+      <main className="flex-1 overflow-y-auto">{children}</main>
+    </div>
+  );
+};
+
+export default Layout;
