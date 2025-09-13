@@ -21,7 +21,16 @@ export default auth((req) => {
 
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
 
-  const isPublicRoute = publicRoutes.includes(nextUrl.pathname); // checking weather the url is among the publicRoutes we will always allow this public routes
+  const isPublicRoute = publicRoutes.some((route) => {
+    if (typeof route === "string") {
+      return nextUrl.pathname === route;
+    }
+    if (route instanceof RegExp) {
+      return route.test(nextUrl.pathname);
+    }
+    return false;
+  });
+  // checking weather the url is among the publicRoutes we will always allow this public routes
 
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
 
@@ -37,9 +46,16 @@ export default auth((req) => {
     return undefined;
   }
 
-  if (!isLoggedin && !isPublicRoute) {
-    // not logged in and not on a public route we will redirect the person to login
-    return Response.redirect(new URL("/auth/login", nextUrl));
+  // ✅ Allow public routes (exact + regex)
+  if (isPublicRoute) {
+    return undefined;
+  }
+
+  // ✅ Protect everything else
+  if (!isLoggedin) {
+    if (nextUrl.pathname === "/dashboard") {
+      return Response.redirect(new URL("/auth/login", nextUrl));
+    }
   }
 
   return undefined;

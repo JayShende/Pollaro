@@ -14,7 +14,7 @@ app.use(
     optionsSuccessStatus: 200,
   })
 );
-app.use(authMiddleware);
+// app.use(authMiddleware);
 app.use("/v1", routes);
 // .env varibales
 const { PORT } = process.env;

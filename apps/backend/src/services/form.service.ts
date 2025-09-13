@@ -20,6 +20,7 @@ const createForm = async (data: createFormData) => {
   return form;
 };
 
+//  This is an Public Route
 const getForm = async (formId: string, userId: string) => {
   // check if the form Exist or Not
   const checkForm = await client.form.findUnique({
@@ -33,9 +34,9 @@ const getForm = async (formId: string, userId: string) => {
 
   // if Form Exist Then Check for the Form Onwer
 
-  if (checkForm.ownerId != userId) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, "You Don't Own The Form");
-  }
+  // if (checkForm.ownerId != userId) {
+  //   throw new ApiError(httpStatus.UNAUTHORIZED, "You Don't Own The Form");
+  // }
 
   // Proceed with fetching of the Form
 

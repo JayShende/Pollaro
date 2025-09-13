@@ -3,17 +3,21 @@ import { validate } from "../middlewares/validate";
 
 import formValidation from "../validators/create.validation";
 import formController from "../controller/form.controller";
+import authMiddleware from "../middlewares/auth.middleware";
 const router: Router = express.Router();
 
 // Create Form init
 
 router.post(
   "/createForm",
+  authMiddleware,
   validate(formValidation.createForm),
   formController.create
 );
 
+// this is an Public Route
 router.get("/getForm/:formId", formController.getForm);
-router.get("/", formController.getFormMetaData);
+
+router.get("/", authMiddleware, formController.getFormMetaData);
 
 export default router;

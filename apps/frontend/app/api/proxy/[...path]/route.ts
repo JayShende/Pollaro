@@ -3,6 +3,16 @@ import jwt from "jsonwebtoken";
 import axios from "axios";
 import { auth } from "@/auth";
 
+// ✅ List of public routes (prefix-based)
+const PUBLIC_ROUTES: string[] = [
+  "/api/proxy/v1/form/getForm", // example
+];
+
+// Check if a given path is public
+function isPublicRoute(pathname: string): boolean {
+  return PUBLIC_ROUTES.some((publicPath) => pathname.startsWith(publicPath));
+}
+
 // Utility to sign internal JWT
 function signInternalJwt(userId: string) {
   if (!process.env.INTERNAL_JWT_SECRET) {
@@ -14,25 +24,34 @@ function signInternalJwt(userId: string) {
 }
 
 async function proxyRequest(req: NextRequest, path: string[]) {
-  const session = await auth();
-  if (!session?.user?.id) {
-    return NextResponse.json({
-      message: "Session Error",
-    });
+  const { nextUrl } = req;
+  const publicAllowed = isPublicRoute(nextUrl.pathname);
+
+  let userId: string | null = null;
+
+  // 🔐 Session check only for non-public routes
+  if (!publicAllowed) {
+    const session = await auth();
+    if (!session?.user?.id) {
+      return NextResponse.json({ message: "Session Error" }, { status: 401 });
+    }
+    userId = session.user.id;
   }
 
-  const userId = session?.user?.id;
   // 2. Construct backend URL
   const backendUrl = `${process.env.EXPRESS_URL}/${path.join("/")}`;
 
   // 3. Prepare headers
   const headers: Record<string, string> = {
-    Authorization: `Bearer ${signInternalJwt(session.user.id)}`,
     "Content-Type": req.headers.get("content-type") || "application/json",
   };
 
+  // 👉 Add Authorization only for authenticated requests
+  if (userId) {
+    headers.Authorization = `Bearer ${signInternalJwt(userId)}`;
+  }
+
   try {
-    // 4. Forward request to Express
     const response = await axios({
       url: backendUrl,
       method: req.method,
@@ -40,9 +59,11 @@ async function proxyRequest(req: NextRequest, path: string[]) {
       data: ["POST", "PUT", "PATCH"].includes(req.method)
         ? await req.json()
         : undefined,
+      params: ["GET", "DELETE"].includes(req.method)
+        ? Object.fromEntries(req.nextUrl.searchParams)
+        : undefined,
     });
 
-    // 5. Return response back to client
     return NextResponse.json(response.data, { status: response.status });
   } catch (error: any) {
     const status = error.response?.status || 500;
@@ -51,7 +72,7 @@ async function proxyRequest(req: NextRequest, path: string[]) {
   }
 }
 
-// GET
+// Handlers
 export async function GET(
   req: NextRequest,
   context: { params: Promise<{ path: string[] }> }
@@ -59,8 +80,6 @@ export async function GET(
   const { path } = await context.params;
   return proxyRequest(req, path);
 }
-
-// POST
 export async function POST(
   req: NextRequest,
   context: { params: Promise<{ path: string[] }> }
@@ -68,8 +87,6 @@ export async function POST(
   const { path } = await context.params;
   return proxyRequest(req, path);
 }
-
-// PUT
 export async function PUT(
   req: NextRequest,
   context: { params: Promise<{ path: string[] }> }
@@ -77,8 +94,6 @@ export async function PUT(
   const { path } = await context.params;
   return proxyRequest(req, path);
 }
-
-// DELETE
 export async function DELETE(
   req: NextRequest,
   context: { params: Promise<{ path: string[] }> }
