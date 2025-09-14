@@ -15,11 +15,20 @@ interface formQuestionOptionsProps {
   updatedAt: string;
 }
 
-interface formQuestionsProps {
+export enum questionType {
+  SHORT_ANSWER = "SHORT_ANSWER",
+  LONG_ANSWER = "LONG_ANSWER",
+  MULTIPLE_CHOICE = "MULTIPLE_CHOICE",
+  CHECKBOX = "CHECKBOX",
+  DROPDOWN = "DROPDOWN",
+  FILE_UPLOAD = "FILE_UPLOAD",
+}
+
+export interface formQuestionsProps {
   id: string;
   text: string;
-  type: string;
-  formID: string;
+  type: questionType;
+  formId: string;
   required: boolean;
   order: number;
   createdAt: string;
@@ -47,4 +56,21 @@ interface formData {
 export interface formProps {
   message: string;
   data: formData;
+}
+
+interface responseOptionProps {
+  optionId: string;
+}
+
+interface reponseAnswersProps {
+  questionId: string;
+  text?: string;
+  files: [];
+  options?: responseOptionProps;
+}
+
+export interface responseProps {
+  formId: string;
+  userId?: string;
+  answers: reponseAnswersProps;
 }

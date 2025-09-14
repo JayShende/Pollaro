@@ -1,13 +1,12 @@
 import {
   Card,
-  CardAction,
   CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { geistFont, interFont, poppinsFont } from "@/fonts/font";
+import {interFont, poppinsFont } from "@/fonts/font";
 import { cn, formateDate } from "@/lib/utils";
 import { BsPerson } from "react-icons/bs";
 
@@ -61,11 +60,19 @@ const FormHeaderCard = ({ data }: FormHeaderCardProps) => {
             >
               {data.ownerName} ({data.ownerEmail})
             </span>
-            <div></div>
           </div>
         </div>
       </CardContent>
       <CardFooter>
+      <div className="flex flex-col gap-y-2">
+          <span
+          className={cn(
+            "text-xs font-normal text-red-500",
+            interFont.className
+          )}
+        >
+          * Indicates required question
+        </span>
         <div
           className={cn(
             "flex text-xs text-gray-500 gap-x-1",
@@ -75,6 +82,7 @@ const FormHeaderCard = ({ data }: FormHeaderCardProps) => {
           <p>{timeStamp.formattedDate}</p>
           <p>{timeStamp.formattedTime}</p>
         </div>
+      </div>
       </CardFooter>
     </Card>
   );
