@@ -64,10 +64,8 @@ const ViewForm = ({ formId }: ViewFormProps) => {
   }, [questions.length, formInitialized, form, defaultValues]);
 
   // Watch form values to trigger re-validation
-  const watchedValues = form.watch() as Record<
-    string,
-    string | string[] | File[]
-  >;
+
+  const watchedValues = form.watch() as Record<string, string | string[]>;
 
   // Function to check if all required questions are answered
   const areAllRequiredQuestionsAnswered = useMemo(() => {
@@ -118,7 +116,6 @@ const ViewForm = ({ formId }: ViewFormProps) => {
   async function onSubmitFun(data: FormData) {
     try {
       setIsSubmitting(true);
-      console.log("Form submitted with data:", data);
 
       // Transform form data to match the response schema
       const answers = questions.map((question: formQuestionsProps) => {
@@ -151,10 +148,7 @@ const ViewForm = ({ formId }: ViewFormProps) => {
               : [];
             break;
           case "FILE_UPLOAD":
-            // Handle file upload - you'll need to implement file upload logic
-            answer.files = Array.isArray(fieldValue)
-              ? fieldValue.map((file: File) => file.name) // This should be actual file URLs
-              : [];
+            answer.files = Array.isArray(fieldValue) ? fieldValue : [];
             break;
         }
 
@@ -163,20 +157,13 @@ const ViewForm = ({ formId }: ViewFormProps) => {
 
       const responseData = {
         formId: dataObject.data.id,
-        submissionUserId: null, // You can get this from auth context
+        submissionUserId: null,
         answers,
       };
 
-      console.log("Transformed response data:", responseData);
-
-      // Submit the form data
       await addReponseMutation.mutateAsync(responseData);
-
-      // Show success message or redirect
-      console.log("Form submitted successfully!");
     } catch (error) {
       console.error("Error submitting form:", error);
-      // Handle error (show toast, etc.)
     } finally {
       setIsSubmitting(false);
     }
@@ -190,7 +177,7 @@ const ViewForm = ({ formId }: ViewFormProps) => {
         <form onSubmit={form.handleSubmit(onSubmitFun)} className="space-y-6">
           <div className="space-y-4">
             {questions.map((question: formQuestionsProps) => {
-              const questionCardData = {
+              const questionCardData: formQuestionsProps = {
                 id: question.id,
                 text: question.text,
                 type: question.type,
@@ -201,7 +188,13 @@ const ViewForm = ({ formId }: ViewFormProps) => {
                 updatedAt: question.updatedAt,
                 options: question.options,
               };
-              return <QuestionCard key={question.id} data={questionCardData} />;
+              return (
+                <QuestionCard
+                  key={question.id}
+                  data={questionCardData}
+                  formId={formId}
+                />
+              );
             })}
           </div>
 
