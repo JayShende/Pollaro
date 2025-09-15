@@ -186,7 +186,7 @@ const QuestionCard = ({ data, formId }: QuestionCardProps) => {
       <FormField
         name={fieldName}
         render={({ field }) => (
-          <Card>
+          <Card >
             <CardHeader>
               <CardTitle>
                 <div

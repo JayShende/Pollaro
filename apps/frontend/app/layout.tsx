@@ -26,7 +26,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <TanstackProvider>
-          <main className="w-screen h-screen">{children}</main>
+          <main className="">{children}</main>
         </TanstackProvider>
       </body>
     </html>

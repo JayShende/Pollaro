@@ -6,8 +6,8 @@ interface LayoutProps {
 
 const Layout = ({ children }: LayoutProps) => {
   return (
-    <div className="w-screen  bg-[#EFEFEF]">
-      <main className="flex-1 overflow-y-auto">{children}</main>
+    <div className="w-full min-h-full bg-[#EFEFEF]">
+      <main className="flex-1 overflow-y-auto ">{children}</main>
     </div>
   );
 };

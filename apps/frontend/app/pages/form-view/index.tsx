@@ -10,6 +10,7 @@ import { createFormSchema } from "@/app/schemas/addreponse-schmea";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect, useMemo } from "react";
 import { useAddResponse } from "@/app/services/mutations";
+import { redirect } from "next/navigation";
 
 interface ViewFormProps {
   formId: string;
@@ -166,6 +167,8 @@ const ViewForm = ({ formId }: ViewFormProps) => {
       console.error("Error submitting form:", error);
     } finally {
       setIsSubmitting(false);
+      localStorage.setItem("hasResponded", "true");
+      redirect("/form/confirm");
     }
   }
 
@@ -189,11 +192,13 @@ const ViewForm = ({ formId }: ViewFormProps) => {
                 options: question.options,
               };
               return (
-                <QuestionCard
+               <div key={question.id} className="flex flex-col gap-y-4 overflow-x-hidden">
+                 <QuestionCard
                   key={question.id}
                   data={questionCardData}
                   formId={formId}
                 />
+               </div>
               );
             })}
           </div>

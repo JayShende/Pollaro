@@ -21,7 +21,7 @@
 ## Frontend Learings
 
 1. Layout how the Layout is made ie the space between haeder and main , where the header has a fixed posostion and an fixed height the main takes the entire remaining height
-
+2. The Form how it is Being Created and how the hook is getting the presigned url and uploading the files -> understand and document this 🟥🟥🟥
 
 ## 🔹 4. Summary
 
