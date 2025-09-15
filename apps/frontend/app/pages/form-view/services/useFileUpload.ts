@@ -45,7 +45,7 @@ export const useFileUpload = (formId: string) => {
 
       // Get presigned POST data
       const { data: presignRes } = await axios.post(
-        "/api/proxy/v1/fileUpload/upload",
+        "/api/proxy/v1/file/upload",
         {
           fileName: file.name,
           fileType: file.type,

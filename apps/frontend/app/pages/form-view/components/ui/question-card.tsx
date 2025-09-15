@@ -24,6 +24,7 @@ import { FormField, FormMessage } from "@/components/ui/form";
 import { useFileUpload, UploadedFile } from "../../services/useFileUpload";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import axios from "axios";
 
 interface QuestionCardProps {
   data: formQuestionsProps;
@@ -71,10 +72,18 @@ const FileUploadField = ({
     }
   };
 
-  const handleRemoveFile = (fileToRemove: UploadedFile) => {
+  const handleRemoveFile = async (fileToRemove: UploadedFile) => {
     removeFile(fileToRemove.key);
     const currentKeys = field.value || [];
     const fileUrl = `https://d2umaa5a4grwi8.cloudfront.net/${fileToRemove.key}`;
+    const deleteFile = await axios({
+      method: "post",
+      url: "/api/proxy/v1/file/delete",
+      data: {
+        key: fileToRemove.key,
+      },
+    });
+    console.log(deleteFile);
     field.onChange(currentKeys.filter((key: string) => key !== fileUrl));
   };
 
@@ -186,7 +195,7 @@ const QuestionCard = ({ data, formId }: QuestionCardProps) => {
       <FormField
         name={fieldName}
         render={({ field }) => (
-          <Card >
+          <Card>
             <CardHeader>
               <CardTitle>
                 <div

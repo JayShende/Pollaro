@@ -6,7 +6,7 @@ import appRoute from "./app.route";
 import formRoute from "./form.route";
 import questionRoute from "./question.route";
 import responseRoute from "./response.route";
-import fileUploadRoute from "./fileUpload.route";
+import fileRoute from "./file.route";
 
 const defaultRoutes = [
   {
@@ -26,8 +26,8 @@ const defaultRoutes = [
     route: responseRoute,
   },
   {
-    path: "/fileUpload",
-    route: fileUploadRoute,
+    path: "/file",
+    route: fileRoute,
   },
 ];
 

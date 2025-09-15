@@ -8,4 +8,10 @@ const fileUpload = z.object({
     })
 })
 
-export default { fileUpload };
+const fileDelete = z.object({
+    body: z.object({
+        key: z.string({ message: "key must be a valid String" }),
+    })
+})
+
+export default { fileUpload, fileDelete };
