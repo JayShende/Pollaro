@@ -50,24 +50,38 @@ const FileUploadField = ({
   const { uploading, progress, uploadedFiles, uploadFile, removeFile } =
     useFileUpload(formId);
   const [error, setError] = useState<string>("");
+  const [disableUpload, setDisableUpload] = useState<boolean>(false);
   const deleteFileMutation = useDeleteFile();
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
-    if (files.length === 0) return;
+    if (files.length === 0) {
+      setDisableUpload(false);
+      return;
+    }
+
+    // Only allow one file at a time
+    if (files.length > 1) {
+      setError("Only one file can be uploaded at a time");
+      return;
+    }
+
+    // If there's already a file uploaded, replace it
+    if (field.value && field.value.length > 0) {
+      setError("Please remove the existing file before uploading a new one");
+      return;
+    }
 
     setError("");
 
     try {
-      const uploadPromises = files.map((file) => uploadFile(file));
-      const uploadedFileData = await Promise.all(uploadPromises);
+      const file = files[0]!;
+      const uploadedFileData = await uploadFile(file);
 
-      // Update form field with uploaded file keys
-      const currentKeys = field.value || [];
-      const newKeys = uploadedFileData.map(
-        (file) => `https://d2umaa5a4grwi8.cloudfront.net/${file.key}`
-      );
-      field.onChange([...currentKeys, ...newKeys]);
+      // Update form field with uploaded file key
+      const fileUrl = `https://d2umaa5a4grwi8.cloudfront.net/${uploadedFileData.key}`;
+      field.onChange([fileUrl]);
+      setDisableUpload(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Upload failed");
     }
@@ -76,9 +90,8 @@ const FileUploadField = ({
   const handleRemoveFile = async (fileToRemove: UploadedFile) => {
     await deleteFileMutation.mutateAsync(fileToRemove.key);
     removeFile(fileToRemove.key);
-    const currentKeys = field.value || [];
-    const fileUrl = `https://d2umaa5a4grwi8.cloudfront.net/${fileToRemove.key}`;
-    field.onChange(currentKeys.filter((key: string) => key !== fileUrl));
+    field.onChange([]);
+    setDisableUpload(false);
   };
 
   return (
@@ -102,13 +115,13 @@ const FileUploadField = ({
               id="file-upload"
               className="hidden"
               onChange={handleFileChange}
-              disabled={uploading}
+              disabled={uploading || disableUpload}
             />
             <Button
               type="button"
               variant="outline"
               onClick={() => document.getElementById("file-upload")?.click()}
-              disabled={uploading}
+              disabled={uploading || disableUpload}
               className="shrink-0"
             >
               {uploading ? "Uploading..." : "Choose Files"}
@@ -136,13 +149,14 @@ const FileUploadField = ({
           )}
 
           <p className={cn("text-sm text-gray-500", poppinsFont.className)}>
-            Supported formats: PDF, DOC, DOCX, PNG, JPG, GIF (Max 3 MB)
+            Supported formats: PDF, DOC, DOCX, PNG, JPG, GIF (Max 3 MB) - One
+            file only
           </p>
 
           {uploadedFiles.length > 0 && (
             <div className="mt-2">
               <p className="text-sm font-medium text-gray-700 mb-2">
-                Uploaded files:
+                Uploaded file:
               </p>
               <div className="space-y-2">
                 {uploadedFiles.map((file) => (
