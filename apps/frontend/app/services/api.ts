@@ -26,3 +26,12 @@ export const addReponse = async (data: responseProps) => {
   });
   return response.data;
 };
+
+export const deleteFile = async (key: string) => {
+  const response = await axios({
+    method: "post",
+    url: `/${baseUrl}/file/delete`,
+    data: { key },
+  });
+  return response.data;
+};

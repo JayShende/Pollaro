@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { responseProps } from "../types/form.types";
-import { addReponse } from "./api";
+import { addReponse, deleteFile } from "./api";
 
 export function useAddResponse() {
   return useMutation({
@@ -11,6 +11,16 @@ export function useAddResponse() {
     },
     onSuccess: () => {
       console.log("Successfull");
+    },
+  });
+}
+
+export function useDeleteFile() {
+  return useMutation({
+    mutationFn: (key: string) => deleteFile(key),
+    mutationKey: ["delete_file"],
+    onMutate: () => {
+      console.log("Mutatted");
     },
   });
 }

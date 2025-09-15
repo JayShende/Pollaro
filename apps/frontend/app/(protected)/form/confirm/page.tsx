@@ -37,8 +37,8 @@ const ResponseConfirm = ({
   dashboardButtonHref = "/dashboard",
 }: ResponseConfirmProps) => {
   return (
-    <div className="flex flex-col gap-y-6 max-w-4xl mx-auto p-6">
-      <Card className="pt-0">
+    <div className="flex flex-col gap-y-6 max-w-4xl mx-auto p-6 bg-[#EFEFEF] min-w-full min-h-screen items-center">
+      <Card className="pt-0 w-[60%]">
         {/* Indigo top border matching the form header */}
         <div className="m-0 w-full h-3 bg-indigo-500 rounded-t-xl"></div>
 
