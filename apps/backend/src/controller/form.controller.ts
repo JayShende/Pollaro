@@ -93,10 +93,34 @@ const getFormInfo = async (req: Request, res: Response) => {
   }
 };
 
+const updateFormInfo = async (req: Request, res: Response) => {
+  const { formId } = req.params;
+  const data = req.body;
+  try {
+    const form = await formService.updateFormInfo(
+      formId as string,
+      data,
+      req.user?.userId!
+    );
+    return response(res, HttpStatus.OK, "Form updated SuccessFully", form);
+  } catch (error) {
+    if (error instanceof ApiError) {
+      return response(res, error.statusCode, error.message, null);
+    }
+    return response(
+      res,
+      HttpStatus.INTERNAL_SERVER_ERROR,
+      "Internal Server Error",
+      null
+    );
+  }
+};
+
 export default {
   create,
   getForm,
   getFormMetaData,
   checkOwner,
   getFormInfo,
+  updateFormInfo,
 };

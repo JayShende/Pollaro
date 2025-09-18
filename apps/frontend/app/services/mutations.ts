@@ -1,6 +1,12 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createFormProps, responseProps } from "../types/form.types";
-import { addReponse, checkOwner, createForm, deleteFile } from "./api";
+import {
+  addReponse,
+  checkOwner,
+  createForm,
+  deleteFile,
+  updateFormInfo,
+} from "./api";
 
 export function useAddResponse() {
   return useMutation({
@@ -35,5 +41,32 @@ export function useCheckOwner() {
   return useMutation({
     mutationFn: (formId: string) => checkOwner(formId),
     mutationKey: ["check_owner"],
+  });
+}
+
+interface updateFormInfoProps {
+  formId: string;
+  data: createFormProps;
+}
+
+export function useUpdateFormInfo() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ formId, data }: updateFormInfoProps) =>
+      updateFormInfo(formId, data),
+    mutationKey: ["update_form_info"],
+    onMutate: () => {
+      console.log("Mutatted");
+    },
+    onSuccess: () => {
+      console.log("Successfull");
+    },
+
+    onSettled: async (_, error, variables) => {
+      if (error) {
+        console.log(error);
+      }
+      await queryClient.invalidateQueries({ queryKey: ["form_info", variables.formId] });
+    },
   });
 }

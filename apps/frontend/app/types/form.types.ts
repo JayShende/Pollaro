@@ -77,7 +77,7 @@ export interface responseProps {
 
 export interface createFormProps {
   title: string;
-  description: string;
+  description?: string;
 }
 
 export interface formInfoProps {

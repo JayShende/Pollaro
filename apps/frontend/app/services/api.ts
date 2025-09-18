@@ -45,10 +45,28 @@ export const createForm = async (data: createFormProps) => {
   return response.data;
 };
 
+export const getFormInfo = async (formId: string) => {
+  const response = await axios({
+    method: "get",
+    url: `/${baseUrl}/form/info/${formId}`,
+  });
+
+  return response.data;
+};
 export const checkOwner = async (formId: string) => {
   const response = await axios({
     method: "get",
     url: `/${baseUrl}/form/checkOwner/${formId}`,
+  });
+  return response.data;
+};
+
+
+export const updateFormInfo = async (formId: string, data: createFormProps) => {
+  const response = await axios({
+    method: "put",
+    url: `/${baseUrl}/form/info/${formId}`,
+    data: data,
   });
   return response.data;
 };

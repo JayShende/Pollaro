@@ -26,8 +26,6 @@ function signInternalJwt(userId: string) {
 async function proxyRequest(req: NextRequest, path: string[]) {
   const { nextUrl } = req;
   const publicAllowed = isPublicRoute(nextUrl.pathname);
-  console.log("publicAllowed", publicAllowed);
-  console.log("nextUrl.pathname", nextUrl.pathname);
   let userId: string | null = null;
 
   // 🔐 Session check only for non-public routes

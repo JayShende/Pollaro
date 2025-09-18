@@ -24,4 +24,11 @@ router.get("/checkOwner/:formId", authMiddleware, formController.checkOwner);
 
 router.get("/info/:formId", authMiddleware, formController.getFormInfo);
 
+router.put(
+  "/info/:formId",
+  validate(formValidation.updateFormInfo),
+  authMiddleware,
+  formController.updateFormInfo
+);
+
 export default router;

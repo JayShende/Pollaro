@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { formsMetaData, getForm } from "./api";
+import { formsMetaData, getForm, getFormInfo } from "./api";
 
 export function useGetFormMetaData() {
   return useQuery({
@@ -13,6 +13,14 @@ export function useGetForm(formId: string) {
   return useQuery({
     queryKey: ["entire_form", formId],
     queryFn: () => getForm(formId),
+    refetchOnWindowFocus: false,
+  });
+}
+
+export function useGetFormInfo(formId: string) {
+  return useQuery({
+    queryKey: ["form_info", formId],
+    queryFn: () => getFormInfo(formId),
     refetchOnWindowFocus: false,
   });
 }
