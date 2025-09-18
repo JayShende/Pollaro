@@ -20,4 +20,8 @@ router.get("/getForm/:formId", formController.getForm);
 
 router.get("/", authMiddleware, formController.getFormMetaData);
 
+router.get("/checkOwner/:formId", authMiddleware, formController.checkOwner);
+
+router.get("/info/:formId", authMiddleware, formController.getFormInfo);
+
 export default router;

@@ -13,7 +13,6 @@ const DashboardMain = () => {
   if (getFormMetaData.isError) {
     return <div>Some Error</div>;
   }
-  console.log(getFormMetaData);
   return (
     <div className="w-full h-full">
       <div className="grid grid-cols-6 gap-x-4 gap-y-6">

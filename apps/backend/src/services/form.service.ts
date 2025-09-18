@@ -5,7 +5,6 @@ import httpStatus from "http-status";
 interface createFormData {
   title: string;
   description: string;
-  ownerId: string;
 }
 
 /**
@@ -13,9 +12,12 @@ interface createFormData {
  *
  */
 
-const createForm = async (data: createFormData) => {
+const createForm = async (data: createFormData, userId: string) => {
   const form = await client.form.create({
-    data: data,
+    data: {
+      ...data,
+      ownerId: userId,
+    },
   });
   return form;
 };
@@ -77,8 +79,65 @@ const getFormMetaData = async (userId: string) => {
   return metaData;
 };
 
+const checkOwner = async (formId: string, userId: string) => {
+  const form = await client.form.findUnique({
+    where: {
+      id: formId,
+    },
+  });
+
+  if (form === null) {
+    throw new ApiError(httpStatus.NOT_FOUND, "Form Not Found");
+  }
+  if (form.ownerId !== userId) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, "You Don't Own The Form");
+  }
+
+  return form;
+};
+
+const getFormInfo = async (formId: string, userId: string) => {
+  try {
+    //  check if the user is the owner of the form
+    const form = await client.form.findUnique({
+      where: {
+        id: formId,
+      },
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        ownerId: true,
+        owner: {
+          select: {
+            name: true,
+            email: true,
+          },
+        },
+      },
+    });
+    if (form === null) {
+      throw new ApiError(httpStatus.NOT_FOUND, "Form Not Found");
+    }
+    if (form.ownerId !== userId) {
+      throw new ApiError(httpStatus.UNAUTHORIZED, "You Don't Own The Form");
+    }
+    return form;
+  } catch (error) {
+    if (error instanceof ApiError) {
+      throw error;
+    }
+    throw new ApiError(
+      httpStatus.INTERNAL_SERVER_ERROR,
+      "Internal Server Error"
+    );
+  }
+};
+
 export default {
   createForm,
   getForm,
   getFormMetaData,
+  checkOwner,
+  getFormInfo,
 };

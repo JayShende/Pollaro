@@ -74,3 +74,19 @@ export interface responseProps {
   userId?: string;
   answers: reponseAnswersProps;
 }
+
+export interface createFormProps {
+  title: string;
+  description: string;
+}
+
+export interface formInfoProps {
+  id: string;
+  title: string;
+  description: string;
+  ownerId: string;
+  owner: {
+    name: string;
+    email: string;
+  };
+}

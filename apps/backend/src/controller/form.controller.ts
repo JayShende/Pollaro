@@ -8,7 +8,7 @@ import ApiError from "../utils/api-error";
 const create = async (req: Request, res: Response) => {
   const body = req.body;
   try {
-    const form = await formService.createForm(body);
+    const form = await formService.createForm(body, req.user?.userId!);
     return response(res, HttpStatus.OK, "Form Created Successfully", form);
   } catch (error) {
     console.log(error);
@@ -51,8 +51,52 @@ const getFormMetaData = async (req: Request, res: Response) => {
   }
 };
 
+const checkOwner = async (req: Request, res: Response) => {
+  const { formId } = req.params;
+  try {
+    const form = await formService.checkOwner(
+      formId as string,
+      req.user?.userId!
+    );
+    return response(res, HttpStatus.OK, "Form fetched SuccessFully", form);
+  } catch (error) {
+    if (error instanceof ApiError) {
+      return response(res, error.statusCode, error.message, null);
+    }
+    return response(
+      res,
+      HttpStatus.INTERNAL_SERVER_ERROR,
+      "Internal Server Error",
+      null
+    );
+  }
+};
+
+const getFormInfo = async (req: Request, res: Response) => {
+  const { formId } = req.params;
+  try {
+    const form = await formService.getFormInfo(
+      formId as string,
+      req.user?.userId!
+    );
+    return response(res, HttpStatus.OK, "Form fetched SuccessFully", form);
+  } catch (error) {
+    if (error instanceof ApiError) {
+      return response(res, error.statusCode, error.message, null);
+    }
+    return response(
+      res,
+      HttpStatus.INTERNAL_SERVER_ERROR,
+      "Internal Server Error",
+      null
+    );
+  }
+};
+
 export default {
   create,
   getForm,
-  getFormMetaData
+  getFormMetaData,
+  checkOwner,
+  getFormInfo,
 };

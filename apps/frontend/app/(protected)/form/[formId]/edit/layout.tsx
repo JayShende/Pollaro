@@ -1,0 +1,73 @@
+import HeaderFormEdit from "@/app/pages/form-edit/components/header";
+import { formInfoProps } from "@/app/types/form.types";
+import { auth } from "@/auth";
+import React, { ReactNode } from "react";
+import { cookies } from "next/headers";
+import axios from "axios";
+
+interface LayoutProps {
+  children: ReactNode;
+  params: Promise<{ formId: string }>;
+}
+
+const Layout = async ({ children, params }: LayoutProps) => {
+  const formId = (await params).formId;
+  const session = await auth();
+  if (!session?.user) {
+    return (
+      <div className="bg-emerald-100 w-full h-10 flex items-center justify-center text-sm text-red-500">
+        No active session
+      </div>
+    );
+  }
+  const cookieStore = await cookies();
+
+  const response = await axios({
+    method: "get",
+    url: `http://localhost:3000/api/proxy/v1/form/info/${formId}`,
+    headers: {
+      Cookie: cookieStore
+        .getAll()
+        .map(({ name, value }) => `${name}=${value}`)
+        .join("; "),
+    },
+  });
+
+  const info = response.data
+  const formInfo: formInfoProps = info.data;
+  const { name, image, email } = session.user;
+  if (name == null || name == undefined) {
+    return;
+  }
+  if (email == null || email == undefined) {
+    return;
+  }
+  if (image == null || image == undefined) {
+    return;
+  }
+  const initials = name
+    ? name
+        .split(" ")
+        .map((n) => n[0])
+        .join("")
+        .toUpperCase()
+    : "NA";
+  if (initials == null || initials == undefined) {
+    return;
+  }
+  return (
+    <div className="w-full min-h-screen ">
+      <HeaderFormEdit
+        formId={formId}
+        name={name}
+        image={image}
+        email={email}
+        initials={initials}
+        formInfo={formInfo}
+      />
+      <main className="flex-1 overflow-y-auto ">{children}</main>
+    </div>
+  );
+};
+
+export default Layout;

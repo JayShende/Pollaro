@@ -11,8 +11,6 @@ const createForm = z.object({
       .string()
       .min(3, { message: "Description must be at least 3 characters long" })
       .max(200, { message: "Description must not exceed 200 characters" }),
-
-    ownerId: z.string().min(1, { message: "Owner ID is required" }),
   }),
 });
 

@@ -10,7 +10,7 @@ const PUBLIC_ROUTES: string[] = [
 
 // Check if a given path is public
 function isPublicRoute(pathname: string): boolean {
-  return PUBLIC_ROUTES.some((publicPath) => pathname.startsWith(publicPath));
+  return PUBLIC_ROUTES.includes(pathname);
 }
 
 // Utility to sign internal JWT
@@ -26,7 +26,8 @@ function signInternalJwt(userId: string) {
 async function proxyRequest(req: NextRequest, path: string[]) {
   const { nextUrl } = req;
   const publicAllowed = isPublicRoute(nextUrl.pathname);
-
+  console.log("publicAllowed", publicAllowed);
+  console.log("nextUrl.pathname", nextUrl.pathname);
   let userId: string | null = null;
 
   // 🔐 Session check only for non-public routes

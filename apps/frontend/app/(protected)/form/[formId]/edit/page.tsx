@@ -1,8 +1,18 @@
+"use client";
+import EditFormPage from "@/app/pages/form-edit";
+import { useParams } from "next/navigation";
+
 const FormEdit = () => {
+  const params = useParams();
+  const formId = params.formId?.toString();
+  if (!formId) {
+    return <div>Form Id is not provided</div>;
+  }
   return (
-    <div>
-      Inside Form Edit
-    </div>
+   <>
+   <EditFormPage/>
+   <div>Edit </div>
+   </>
   )
 };
 

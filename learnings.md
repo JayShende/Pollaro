@@ -29,3 +29,64 @@
 * ❌ **Client → Server** is NOT allowed.
 * ✅ Server components **can be async** (and usually are).
 * ❌ Client components **cannot** be async (must fetch via hooks like `useEffect` or react-query).
+
+
+Great question 🚀
+
+Yes, you **can** call
+
+```ts
+const params = useParams();
+const formId = params.formId?.toString();
+```
+
+inside any component that is  **a client component and rendered somewhere under `app/form/[formId]/edit/page.tsx`** .
+
+---
+
+### ✅ Things to keep in mind:
+
+1. `useParams` only works in **client components** (`"use client"` at the top).
+2. You don’t need to fetch `params` in the `page.tsx` and pass them down manually — every nested client component can call `useParams()` itself.
+3. The value of `params.formId` will be the same everywhere in that route tree, since it comes from the `[formId]` dynamic segment.
+
+---
+
+### Example:
+
+```tsx
+// app/form/[formId]/edit/page.tsx
+import Nested from "./nested";
+
+export default function EditFormPage() {
+  return (
+    <div>
+      <h1>Edit Form</h1>
+      <Nested />
+    </div>
+  );
+}
+```
+
+```tsx
+// app/form/[formId]/edit/nested.tsx
+"use client";
+import { useParams } from "next/navigation";
+
+export default function Nested() {
+  const params = useParams();
+  const formId = params.formId?.toString();
+
+  return <div>FormId in nested: {formId}</div>;
+}
+```
+
+👉 This works fine, because `useParams` looks at the **current route** (`/form/[formId]/edit/...`) and extracts the segment values.
+
+---
+
+⚡ Alternative: If you need the `formId` everywhere, you could also  **read it once in `page.tsx` and pass it down via props or context** , which is sometimes cleaner if many components need it.
+
+---
+
+Do you want me to show you a **context-based setup** so you don’t have to call `useParams` in every nested component?
