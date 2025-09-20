@@ -30,7 +30,6 @@
 * ✅ Server components **can be async** (and usually are).
 * ❌ Client components **cannot** be async (must fetch via hooks like `useEffect` or react-query).
 
-
 Great question 🚀
 
 Yes, you **can** call
@@ -83,10 +82,5 @@ export default function Nested() {
 
 👉 This works fine, because `useParams` looks at the **current route** (`/form/[formId]/edit/...`) and extracts the segment values.
 
----
 
-⚡ Alternative: If you need the `formId` everywhere, you could also  **read it once in `page.tsx` and pass it down via props or context** , which is sometimes cleaner if many components need it.
-
----
-
-Do you want me to show you a **context-based setup** so you don’t have to call `useParams` in every nested component?
+### Tanstack Query passing values to the mutation validation query part

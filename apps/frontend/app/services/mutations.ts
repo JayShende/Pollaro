@@ -1,12 +1,15 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createFormProps, responseProps } from "../types/form.types";
 import {
+  addLongAnswer,
   addReponse,
+  addShortAnswer,
   checkOwner,
   createForm,
   deleteFile,
   updateFormInfo,
 } from "./api";
+import { addLongAnswerProps, addShortAnswerProps } from "../types/questions.types";
 
 export function useAddResponse() {
   return useMutation({
@@ -66,7 +69,38 @@ export function useUpdateFormInfo() {
       if (error) {
         console.log(error);
       }
-      await queryClient.invalidateQueries({ queryKey: ["form_info", variables.formId] });
+      await queryClient.invalidateQueries({
+        queryKey: ["form_info", variables.formId],
+      });
     },
+  });
+}
+
+//  add Question Mutation
+
+export function useAddShortAnswer() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data: addShortAnswerProps) => addShortAnswer(data),
+    mutationKey: ["add_short_answer"],
+    onMutate: () => {
+      console.log("Mutatted");
+    },
+    onSettled: async (_, error, variables) => {
+      if (error) {
+        console.log(error);
+      }
+      await queryClient.invalidateQueries({
+        queryKey: ["form_questions", variables.formId],
+      });
+    },
+  });
+}
+
+export function useAddLongAnswer() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data: addLongAnswerProps) => addLongAnswer(data),
+    mutationKey: ["add_long_answer"],
   });
 }

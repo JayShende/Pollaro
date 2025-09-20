@@ -68,6 +68,7 @@ model Form {
   title       String
   description String?
   ownerId     String
+  lastQuestionOrder Int        @default(0)
   owner       User       @relation(fields: [ownerId], references: [id])
   questions   Question[]
   responses   Response[]

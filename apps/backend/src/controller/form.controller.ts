@@ -116,6 +116,31 @@ const updateFormInfo = async (req: Request, res: Response) => {
   }
 };
 
+const getFormQuestions = async (req: Request, res: Response) => {
+  try {
+    const { formId } = req.params;
+    const questions = await formService.getFormQuestions(
+      formId as string,
+      req.user?.userId!
+    );
+    return response(
+      res,
+      HttpStatus.OK,
+      "Questions fetched SuccessFully",
+      questions
+    );
+  } catch (error) {
+    if (error instanceof ApiError) {
+      return response(res, error.statusCode, error.message, null);
+    }
+    return response(
+      res,
+      HttpStatus.INTERNAL_SERVER_ERROR,
+      "Internal Server Error",
+      null
+    );
+  }
+};
 export default {
   create,
   getForm,
@@ -123,4 +148,5 @@ export default {
   checkOwner,
   getFormInfo,
   updateFormInfo,
+  getFormQuestions,
 };

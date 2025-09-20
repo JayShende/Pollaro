@@ -31,4 +31,10 @@ router.put(
   formController.updateFormInfo
 );
 
+router.get(
+  "/questions/:formId",
+  authMiddleware,
+  formController.getFormQuestions
+);
+
 export default router;

@@ -172,6 +172,51 @@ const updateFormInfo = async (
   }
 };
 
+const getFormQuestions = async (formId: string, userId: string) => {
+  try {
+    // check if the user is the owner of the form
+    const form = await client.form.findUnique({
+      where: {
+        id: formId,
+      },
+    });
+    if (form === null) {
+      throw new ApiError(httpStatus.NOT_FOUND, "Form Not Found");
+    }
+    if (form.ownerId !== userId) {
+      throw new ApiError(httpStatus.UNAUTHORIZED, "You Don't Own The Form");
+    }
+    // get the questions of the form
+    const questions = await client.form.findUnique({
+      where: {
+        id: formId,
+      },
+      include: {
+        owner: {
+          select: {
+            name: true,
+            email: true,
+          },
+        },
+        questions: {
+          include: {
+            options: true,
+          },
+        },
+      },
+    });
+    return questions;
+  } catch (error) {
+    if (error instanceof ApiError) {
+      throw error;
+    }
+    throw new ApiError(
+      httpStatus.INTERNAL_SERVER_ERROR,
+      "Internal Server Error"
+    );
+  }
+};
+
 export default {
   createForm,
   getForm,
@@ -179,4 +224,5 @@ export default {
   checkOwner,
   getFormInfo,
   updateFormInfo,
+  getFormQuestions,
 };

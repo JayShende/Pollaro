@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { formsMetaData, getForm, getFormInfo } from "./api";
+import { formsMetaData, getForm, getFormInfo, getFormQuestions } from "./api";
 
 export function useGetFormMetaData() {
   return useQuery({
@@ -21,6 +21,15 @@ export function useGetFormInfo(formId: string) {
   return useQuery({
     queryKey: ["form_info", formId],
     queryFn: () => getFormInfo(formId),
+    refetchOnWindowFocus: false,
+  });
+}
+
+//  query to get the questions of a form
+export function useGetFormQuestions(formId: string) {
+  return useQuery({
+    queryKey: ["form_questions", formId],
+    queryFn: () => getFormQuestions(formId),
     refetchOnWindowFocus: false,
   });
 }

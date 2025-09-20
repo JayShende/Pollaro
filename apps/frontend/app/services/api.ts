@@ -1,5 +1,6 @@
 import axios from "axios";
 import { createFormProps, responseProps } from "../types/form.types";
+import { addLongAnswerProps, addShortAnswerProps } from "../types/questions.types";
 export const baseUrl = "api/proxy/v1";
 
 export const formsMetaData = async () => {
@@ -67,6 +68,36 @@ export const updateFormInfo = async (formId: string, data: createFormProps) => {
     method: "put",
     url: `/${baseUrl}/form/info/${formId}`,
     data: data,
+  });
+  return response.data;
+};
+
+
+//  add Question API
+
+export const addShortAnswer = async (data:addShortAnswerProps) => {
+  const response = await axios({
+    method: "post",
+    url: `/${baseUrl}/question/addShortAnswer`,
+    data: data,
+  });
+  return response.data;
+}
+
+export const addLongAnswer = async (data:addLongAnswerProps) => {
+  const response = await axios({
+    method: "post",
+    url: `/${baseUrl}/question/addLongAnswer`,
+    data: data,
+  });
+  return response.data;
+}
+
+//  api to get the questions of a form
+export const getFormQuestions = async (formId: string) => {
+  const response = await axios({
+    method: "get",
+    url: `/${baseUrl}/form/questions/${formId}`,
   });
   return response.data;
 };

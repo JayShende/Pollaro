@@ -49,14 +49,25 @@ const addShortAnswer = async (data: AnswerProps, userId: string) => {
       "Unauthorised You Don't Own The Form "
     );
   }
-
+  // update the last question order in Form Table
+  const fromUpdate = await client.form.update({
+    where: {
+      id: data.formId,
+    },
+    data: {
+      lastQuestionOrder: { increment: 1 },
+    },
+    select: {
+      lastQuestionOrder: true,
+    },
+  });
   const question = await client.question.create({
     data: {
       text: data.text,
       type: "SHORT_ANSWER",
       formId: data.formId,
       required: data.required,
-      order: data.order,
+      order: fromUpdate.lastQuestionOrder,
     },
   });
 
