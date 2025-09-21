@@ -2,14 +2,26 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createFormProps, responseProps } from "../types/form.types";
 import {
   addLongAnswer,
+  addMultipleChoice,
+  addCheckbox,
+  addDropdown,
+  addFileUpload,
   addReponse,
   addShortAnswer,
   checkOwner,
   createForm,
   deleteFile,
   updateFormInfo,
+  toggleAcceptingResponses,
 } from "./api";
-import { addLongAnswerProps, addShortAnswerProps } from "../types/questions.types";
+import {
+  addLongAnswerProps,
+  addMultipleChoiceProps,
+  addShortAnswerProps,
+  addCheckboxProps,
+  addDropdownProps,
+  addFileUploadProps,
+} from "../types/questions.types";
 
 export function useAddResponse() {
   return useMutation({
@@ -40,7 +52,7 @@ export function useCreateForm() {
     mutationKey: ["create_form"],
   });
 }
-export function useCheckOwner() {
+export function useCheckOwner2() {
   return useMutation({
     mutationFn: (formId: string) => checkOwner(formId),
     mutationKey: ["check_owner"],
@@ -102,5 +114,114 @@ export function useAddLongAnswer() {
   return useMutation({
     mutationFn: (data: addLongAnswerProps) => addLongAnswer(data),
     mutationKey: ["add_long_answer"],
+    onMutate: () => {
+      console.log("Mutatted");
+    },
+    onSettled: async (_, error, variables) => {
+      if (error) {
+        console.log(error);
+      }
+      await queryClient.invalidateQueries({
+        queryKey: ["form_questions", variables.formId],
+      });
+    },
+  });
+}
+
+export function useAddMultipleChoice() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data: addMultipleChoiceProps) => addMultipleChoice(data),
+    mutationKey: ["add_multiple_choice"],
+    onMutate: () => {
+      console.log("Mutatted");
+    },
+
+    onSettled: async (_, error, variables) => {
+      if (error) {
+        console.log(error);
+      }
+      await queryClient.invalidateQueries({
+        queryKey: ["form_questions", variables.formId],
+      });
+    },
+  });
+}
+
+export function useAddCheckbox() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data: addCheckboxProps) => addCheckbox(data),
+    mutationKey: ["add_checkbox"],
+    onMutate: () => {
+      console.log("Mutatted");
+    },
+    onSettled: async (_, error, variables) => {
+      if (error) {
+        console.log(error);
+      }
+      await queryClient.invalidateQueries({
+        queryKey: ["form_questions", variables.formId],
+      });
+    },
+  });
+}
+
+export function useAddDropdown() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data: addDropdownProps) => addDropdown(data),
+    mutationKey: ["add_dropdown"],
+    onMutate: () => {
+      console.log("Mutatted");
+    },
+    onSettled: async (_, error, variables) => {
+      if (error) {
+        console.log(error);
+      }
+      await queryClient.invalidateQueries({
+        queryKey: ["form_questions", variables.formId],
+      });
+    },
+  });
+}
+
+export function useAddFileUpload() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data: addFileUploadProps) => addFileUpload(data),
+    mutationKey: ["add_file_upload"],
+    onMutate: () => {
+      console.log("Mutatted");
+    },
+    onSettled: async (_, error, variables) => {
+      if (error) {
+        console.log(error);
+      }
+      await queryClient.invalidateQueries({
+        queryKey: ["form_questions", variables.formId],
+      });
+    },
+  });
+}
+
+// toggle accepting responses mutation
+
+export function useToggleAcceptingResponses() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (formId: string) => toggleAcceptingResponses(formId),
+    mutationKey: ["toggle_accepting_responses"],
+    onMutate: () => {
+      console.log("Mutatted");
+    },
+    onSettled: async (_, error, formId) => {
+      if (error) {
+        console.log(error);
+      }
+      await queryClient.invalidateQueries({
+        queryKey: ["form_accepting_responses", formId],
+      });
+    },
   });
 }

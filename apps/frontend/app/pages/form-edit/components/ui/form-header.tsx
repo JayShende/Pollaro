@@ -39,6 +39,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useUpdateFormInfo } from "@/app/services/mutations";
 import { useState } from "react";
+import { toast } from "sonner";
 
 interface FormHeaderCardProps {
   formId: string;
@@ -73,8 +74,8 @@ const FormHeaderCard = ({ formId }: FormHeaderCardProps) => {
   };
   const timeStamp = formateDate(data.createdAt);
   async function formSubmitHandler(values: z.infer<typeof BlankFormSchema>) {
-    console.log(values);
     await useUpdateFormInfoMutation.mutateAsync({ formId, data: values });
+    toast.success("Form updated successfully");
     setIsOpen(false);
   }
 

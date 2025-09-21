@@ -82,5 +82,6 @@ export default function Nested() {
 
 👉 This works fine, because `useParams` looks at the **current route** (`/form/[formId]/edit/...`) and extracts the segment values.
 
-
 ### Tanstack Query passing values to the mutation validation query part
+
+put Req expects an body manadatoryly

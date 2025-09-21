@@ -141,6 +141,54 @@ const getFormQuestions = async (req: Request, res: Response) => {
     );
   }
 };
+
+const checkIfFormIsAcceptingResponses = async (req: Request, res: Response) => {
+  try {
+    const { formId } = req.params;
+    const form = await formService.checkIfFormIsAcceptingResponses(
+      formId as string,
+      req.user?.userId!
+    );
+    return response(res, HttpStatus.OK, "Form is accepting responses", form);
+  } catch (error) {
+    if (error instanceof ApiError) {
+      return response(res, error.statusCode, error.message, null);
+    }
+    return response(
+      res,
+      HttpStatus.INTERNAL_SERVER_ERROR,
+      "Internal Server Error",
+      null
+    );
+  }
+};
+
+const updateAcceptingResponses = async (req: Request, res: Response) => {
+  try {
+    console.log("In controller");
+    const { formId } = req.body;
+    const form = await formService.updateAcceptingResponses(
+      formId as string,
+      req.user?.userId!
+    );
+    return response(
+      res,
+      HttpStatus.OK,
+      "Form accepting responses updated SuccessFully",
+      form
+    );
+  } catch (error) {
+    if (error instanceof ApiError) {
+      return response(res, error.statusCode, error.message, null);
+    }
+    return response(
+      res,
+      HttpStatus.INTERNAL_SERVER_ERROR,
+      "Internal Server Error",
+      null
+    );
+  }
+};
 export default {
   create,
   getForm,
@@ -149,4 +197,6 @@ export default {
   getFormInfo,
   updateFormInfo,
   getFormQuestions,
+  checkIfFormIsAcceptingResponses,
+  updateAcceptingResponses,
 };

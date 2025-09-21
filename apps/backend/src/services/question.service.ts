@@ -92,7 +92,18 @@ const addLongAnswer = async (data: AnswerProps, userId: string) => {
       "Unauthorised You Don't Own The Form "
     );
   }
-
+  // update the last question order in Form Table
+  const fromUpdate = await client.form.update({
+    where: {
+      id: data.formId,
+    },
+    data: {
+      lastQuestionOrder: { increment: 1 },
+    },
+    select: {
+      lastQuestionOrder: true,
+    },
+  });
   // Proceed with the Addition of Question
   const question = await client.question.create({
     data: {
@@ -100,7 +111,7 @@ const addLongAnswer = async (data: AnswerProps, userId: string) => {
       type: "LONG_ANSWER",
       formId: data.formId,
       required: data.required,
-      order: data.order,
+      order: fromUpdate.lastQuestionOrder,
     },
   });
   return question;
@@ -125,6 +136,19 @@ const addMultipleChoice = async (data: optionsProps, userId: string) => {
     );
   }
 
+  // update the last question order in Form Table
+
+  const fromUpdate = await client.form.update({
+    where: {
+      id: data.formId,
+    },
+    data: {
+      lastQuestionOrder: { increment: 1 },
+    },
+    select: {
+      lastQuestionOrder: true,
+    },
+  });
   // Proceed with the Addition of Question
   const question = await client.question.create({
     data: {
@@ -132,7 +156,7 @@ const addMultipleChoice = async (data: optionsProps, userId: string) => {
       type: "MULTIPLE_CHOICE",
       formId: data.formId,
       required: data.required,
-      order: data.order,
+      order: fromUpdate.lastQuestionOrder,
       options: {
         create: data.options,
       },
@@ -159,7 +183,18 @@ const addCheckBox = async (data: optionsProps, userId: string) => {
       "Unauthorised You Don't Own The Form "
     );
   }
-
+  // update the last question order in Form Table
+  const fromUpdate = await client.form.update({
+    where: {
+      id: data.formId,
+    },
+    data: {
+      lastQuestionOrder: { increment: 1 },
+    },
+    select: {
+      lastQuestionOrder: true,
+    },
+  });
   // Proceed with the Addition of Question
   const question = await client.question.create({
     data: {
@@ -167,7 +202,7 @@ const addCheckBox = async (data: optionsProps, userId: string) => {
       type: "CHECKBOX",
       formId: data.formId,
       required: data.required,
-      order: data.order,
+      order: fromUpdate.lastQuestionOrder,
       options: {
         create: data.options,
       },
@@ -195,6 +230,18 @@ const addDropDown = async (data: optionsProps, userId: string) => {
     );
   }
 
+  // update the last question order in Form Table
+  const fromUpdate = await client.form.update({
+    where: {
+      id: data.formId,
+    },
+    data: {
+      lastQuestionOrder: { increment: 1 },
+    },
+    select: {
+      lastQuestionOrder: true,
+    },
+  });
   // Proceed with the Addition of Question
   const question = await client.question.create({
     data: {
@@ -202,7 +249,7 @@ const addDropDown = async (data: optionsProps, userId: string) => {
       type: "DROPDOWN",
       formId: data.formId,
       required: data.required,
-      order: data.order,
+      order: fromUpdate.lastQuestionOrder,
       options: {
         create: data.options,
       },
@@ -231,6 +278,19 @@ const addFileUplaod = async (data: AnswerProps, userId: string) => {
     );
   }
 
+  // update the last question order in Form Table
+  const fromUpdate = await client.form.update({
+    where: {
+      id: data.formId,
+    },
+    data: {
+      lastQuestionOrder: { increment: 1 },
+    },
+    select: {
+      lastQuestionOrder: true,
+    },
+  });
+
   // Proceed with the Addition of Question
   const question = await client.question.create({
     data: {
@@ -238,7 +298,7 @@ const addFileUplaod = async (data: AnswerProps, userId: string) => {
       type: "FILE_UPLOAD",
       formId: data.formId,
       required: data.required,
-      order: data.order,
+      order: fromUpdate.lastQuestionOrder,
     },
   });
   return question;

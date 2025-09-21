@@ -12,33 +12,56 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { interFont } from "@/fonts/font";
 import GeneratedForm from "../question-dilaog";
+
 interface AddQuestionProps {
   formId: string;
 }
+
 const AddQuestion = ({ formId }: AddQuestionProps) => {
   return (
-    <div className="flex items-center justify-center  w-3xl">
+    <div className="w-3xl ">
       <Dialog>
-        <DialogTrigger className="w-full" asChild>
+        <DialogTrigger className="w-3xl" asChild>
           <Button
             variant="outline"
             className={cn(
-              "w-full  rounded-lg border font-normal border-gray-300 px-4 py-4 text-sm text-gray-600 transition hover:bg-indigo-50 hover:text-indigo-600 cursor-pointer shadow-[0_8px_30px_rgb(0,0,0,0.12)]",
+              "group relative w-full rounded-xl border-2 border-dashed border-indigo-200 bg-gradient-to-br from-white to-indigo-50/30 px-6 py-8 text-sm font-medium text-indigo-600 transition-all duration-300 hover:border-indigo-300 hover:bg-gradient-to-br hover:from-indigo-50 hover:to-indigo-100/50 hover:text-indigo-700 hover:shadow-lg hover:shadow-indigo-100/50 hover:scale-[1.02] active:scale-[0.98] cursor-pointer",
               interFont.className
             )}
           >
-            <IoIosAdd className="w-4 h-4" />
-            Add Question
+            <div className="flex flex-col items-center justify-center space-y-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-indigo-100 transition-colors duration-300 group-hover:bg-indigo-200">
+                <IoIosAdd className="h-6 w-6 text-indigo-600 transition-transform duration-300 group-hover:scale-110" />
+              </div>
+              <div className="text-center">
+                <p className="text-base font-semibold">Add New Question</p>
+                <p className="text-xs text-indigo-500 mt-1">
+                  Choose from various question types
+                </p>
+              </div>
+            </div>
           </Button>
         </DialogTrigger>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Add New Question To Your Form</DialogTitle>
-            <DialogDescription>
-              Add a new question to your form to collect more data.
-            </DialogDescription>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader className="space-y-3 pb-6">
+            <div className="flex items-center space-x-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-100">
+                <IoIosAdd className="h-5 w-5 text-indigo-600" />
+              </div>
+              <div>
+                <DialogTitle className="text-xl font-semibold text-gray-900">
+                  Add New Question
+                </DialogTitle>
+                <DialogDescription className="text-sm text-gray-600 mt-1">
+                  Select a question type and configure it to collect the data
+                  you need.
+                </DialogDescription>
+              </div>
+            </div>
           </DialogHeader>
-          <GeneratedForm formId={formId}/>
+          <div className="space-y-6">
+            <GeneratedForm formId={formId} />
+          </div>
         </DialogContent>
       </Dialog>
     </div>

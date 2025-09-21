@@ -16,8 +16,6 @@ const QuestionsCards = ({ formId }: { formId: string }) => {
   if (questionsData.isError) {
     return <div>Error...</div>;
   }
-  console.log(questionsData.data);
-  console.log(questionsData.data.data.questions);
   return (
     <div className="flex flex-col gap-4 w-3xl">
       {questionsData.data.data.questions.map((question: formQuestionsProps) => {
@@ -28,6 +26,35 @@ const QuestionsCards = ({ formId }: { formId: string }) => {
               formId={formId}
               key={question.id}
             />
+          );
+        }
+        if (question.type === questionType.LONG_ANSWER) {
+          return (
+            <LongAnswerCard data={question} formId={formId} key={question.id} />
+          );
+        }
+        if (question.type === questionType.MULTIPLE_CHOICE) {
+          return (
+            <MultipleChoiceCard
+              data={question}
+              formId={formId}
+              key={question.id}
+            />
+          );
+        }
+        if (question.type === questionType.CHECKBOX) {
+          return (
+            <CheckboxCard data={question} formId={formId} key={question.id} />
+          );
+        }
+        if (question.type === questionType.DROPDOWN) {
+          return (
+            <DropdownCard data={question} formId={formId} key={question.id} />
+          );
+        }
+        if (question.type === questionType.FILE_UPLOAD) {
+          return (
+            <FileUploadCard data={question} formId={formId} key={question.id} />
           );
         }
       })}

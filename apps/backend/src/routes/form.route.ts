@@ -37,4 +37,15 @@ router.get(
   formController.getFormQuestions
 );
 
+router.get(
+  "/checkIfFormIsAcceptingResponses/:formId",
+  formController.checkIfFormIsAcceptingResponses
+);
+
+router.put(
+  "/updateAcceptingResponses",
+  authMiddleware,
+  formController.updateAcceptingResponses
+);
+
 export default router;
