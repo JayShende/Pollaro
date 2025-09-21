@@ -6,6 +6,7 @@ import {
   getForm,
   getFormInfo,
   getFormQuestions,
+  getTotalResponses,
 } from "./api";
 
 export function useGetFormMetaData() {
@@ -56,6 +57,15 @@ export function useCheckOwner(formId: string) {
   return useQuery({
     queryKey: ["check_owner", formId],
     queryFn: () => checkOwner(formId),
+    refetchOnWindowFocus: false,
+  });
+}
+
+// query to get the total responses of a form
+export function useGetTotalResponses(formId: string) {
+  return useQuery({
+    queryKey: ["total_responses", formId],
+    queryFn: () => getTotalResponses(formId),
     refetchOnWindowFocus: false,
   });
 }

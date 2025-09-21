@@ -172,7 +172,77 @@ const getResposnebyId = async (
   return formResponse;
 };
 
+const getTotalResponses = async (formId: string, userId: string) => {
+  try {
+    // check if the form exists
+    const form = await client.form.findUnique({
+      where: { id: formId },
+      include: {
+        questions: {
+          orderBy: { order: "asc" },
+          include: { options: true },
+        },
+      },
+    });
+    if (form === null) {
+      throw new ApiError(httpStatus.NOT_FOUND, "Form Not Found");
+    } // check if the user is the owner of the form
+    if (form.ownerId !== userId) {
+      throw new ApiError(httpStatus.UNAUTHORIZED, "You Don't Own The Form");
+    }
+    // get the total responses
+    // 2. Get all responses with answers
+    const responses = await client.response.findMany({
+      where: { formId },
+      include: {
+        user: { select: { id: true, name: true, email: true } },
+        answers: {
+          include: {
+            options: { include: { option: true } },
+            question: true,
+          },
+        },
+      },
+    });
+
+    // 3. Merge each response’s answers into questions
+    return responses.map((resp) => ({
+      id: resp.id,
+      createdAt: resp.createdAt,
+      user: resp.user,
+      questions: form.questions.map((q) => ({
+        id: q.id,
+        text: q.text,
+        type: q.type,
+        required: q.required,
+        order: q.order,
+        options: q.options.map((o) => ({ id: o.id, text: o.text })),
+        answers: resp.answers
+          .filter((a) => a.questionId === q.id)
+          .map((a) => ({
+            id: a.id,
+            text: a.text,
+            files: a.files,
+            createdAt: a.createdAt,
+            options: a.options.map((opt) => ({
+              option: { id: opt.option.id, text: opt.option.text },
+            })),
+          })),
+      })),
+    }));
+  } catch (error) {
+    if (error instanceof ApiError) {
+      throw error;
+    }
+    throw new ApiError(
+      httpStatus.INTERNAL_SERVER_ERROR,
+      "Internal Server Error"
+    );
+  }
+};
+
 export default {
   addResponse,
   getResposnebyId,
+  getTotalResponses,
 };

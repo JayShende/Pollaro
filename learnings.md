@@ -85,3 +85,6 @@ export default function Nested() {
 ### Tanstack Query passing values to the mutation validation query part
 
 put Req expects an body manadatoryly
+
+
+Revision how the tabs have been used across the layout and page.tsx using the custom created tabs provider.tsx https://chatgpt.com/c/68cff9d8-4e38-8320-8698-031fa88b7a3d ask this chat to explain it in detail

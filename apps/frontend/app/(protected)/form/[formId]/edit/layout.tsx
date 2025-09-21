@@ -4,6 +4,7 @@ import { auth } from "@/auth";
 import React, { ReactNode } from "react";
 import { cookies } from "next/headers";
 import axios from "axios";
+import { TabsProvider } from "@/app/pages/response/components/tabs-provider";
 
 interface LayoutProps {
   children: ReactNode;
@@ -13,6 +14,7 @@ interface LayoutProps {
 const Layout = async ({ children, params }: LayoutProps) => {
   const formId = (await params).formId;
   const session = await auth();
+
   if (!session?.user) {
     return (
       <div className="bg-emerald-100 w-full h-10 flex items-center justify-center text-sm text-red-500">
@@ -33,7 +35,7 @@ const Layout = async ({ children, params }: LayoutProps) => {
     },
   });
 
-  const info = response.data
+  const info = response.data;
   const formInfo: formInfoProps = info.data;
   const { name, image, email } = session.user;
   if (name == null || name == undefined) {
@@ -56,17 +58,19 @@ const Layout = async ({ children, params }: LayoutProps) => {
     return;
   }
   return (
-    <div className="w-full min-h-screen ">
-      <HeaderFormEdit
-        formId={formId}
-        name={name}
-        image={image}
-        email={email}
-        initials={initials}
-        formInfo={formInfo}
-      />
-      <main className="flex-1 overflow-y-auto ">{children}</main>
-    </div>
+    <TabsProvider>
+      <div className="w-full min-h-screen ">
+        <HeaderFormEdit
+          formId={formId}
+          name={name}
+          image={image}
+          email={email}
+          initials={initials}
+          formInfo={formInfo}
+        />
+        <main className="flex-1 overflow-y-auto ">{children}</main>
+      </div>
+    </TabsProvider>
   );
 };
 

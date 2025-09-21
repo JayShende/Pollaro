@@ -20,4 +20,10 @@ router.get(
   responseController.getResposnebyId
 );
 // get all Resposne per form
+router.get(
+  "/getTotalResponses/:formId",
+  authMiddleware,
+  responseController.getTotalResponses
+);
+
 export default router;

@@ -170,3 +170,12 @@ export const deleteQuestion = async (formId: string, questionId: string) => {
   });
   return response.data;
 };
+
+// fetch all responses of a form
+export const getTotalResponses = async (formId: string) => {
+  const response = await axios({
+    method: "get",
+    url: `/${baseUrl}/response/getTotalResponses/${formId}`,
+  });
+  return response.data;
+};

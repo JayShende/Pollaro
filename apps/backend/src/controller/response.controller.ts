@@ -75,7 +75,37 @@ const getResposnebyId = async (req: Request, res: Response) => {
   }
 };
 
+const getTotalResponses = async (req: Request, res: Response) => {
+  const { formId } = req.params;
+  if (!formId) {
+    return response(res, HttpStatus.BAD_REQUEST, "Form Id not Provided", null);
+  }
+  try {
+    const totalResponses = await responseService.getTotalResponses(
+      formId,
+      req.user?.userId!
+    );
+    return response(
+      res,
+      HttpStatus.OK,
+      "Total Responses Fetched Successfully",
+      totalResponses
+    );
+  } catch (error) {
+    if (error instanceof ApiError) {
+      return response(res, error.statusCode, error.message, null);
+    }
+    return response(
+      res,
+      HttpStatus.INTERNAL_SERVER_ERROR,
+      "Internal Server Error",
+      null
+    );
+  }
+};
+
 export default {
   addFormResponse,
   getResposnebyId,
+  getTotalResponses,
 };

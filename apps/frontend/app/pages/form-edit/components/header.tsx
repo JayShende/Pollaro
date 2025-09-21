@@ -26,7 +26,8 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { toast } from "sonner";
-
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useTabs } from "../../response/components/tabs-provider";
 interface HeaderFormEditProps {
   formId: string;
   name: string;
@@ -48,6 +49,7 @@ const HeaderFormEdit = ({
   const toggleAcceptingResponsesMutation = useToggleAcceptingResponses();
   const [copyLink, setCopyLink] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const { tab, setTab } = useTabs();
   if (isAcceptingResponsesQuery.isLoading) {
     return <div>Loading...</div>;
   }
@@ -72,9 +74,10 @@ const HeaderFormEdit = ({
       console.error("Error:", error);
     }
   }
+
   return (
-    <div className="bg-indigo-50 h-16 px-6 py-2 flex justify-between items-center sticky top-0 z-50">
-      <div className="flex  items-center">
+    <div className="bg-indigo-50 h-16 px-6 py-2 grid grid-cols-3 sticky top-0 z-50">
+      <div className="flex items-center col-span-1">
         <Image
           src="https://d2umaa5a4grwi8.cloudfront.net/projects/pollaro/assets/logo_2.png"
           width={60}
@@ -87,10 +90,20 @@ const HeaderFormEdit = ({
             interFont.className
           )}
         >
-          {formInfo.title}
+          {formInfo.title.length > 10
+            ? `${formInfo.title.slice(0, 10)}...`
+            : formInfo.title}
         </span>
       </div>
-      <div className="flex items-center justify-between gap-x-4">
+      <div className="col-span-1 flex items-center justify-center">
+        <Tabs value={tab} onValueChange={(val) => setTab(val as any)}>
+          <TabsList className={cn("bg-indigo-50 gap-x-1", interFont.className)}>
+            <TabsTrigger value="edit_form">Edit Form</TabsTrigger>
+            <TabsTrigger value="responses">Responses</TabsTrigger>
+          </TabsList>
+        </Tabs>
+      </div>
+      <div className="flex items-center justify-end gap-x-4 col-span-1">
         <div
           className="p-1 rounded-full hover:bg-indigo-100 cursor-pointer"
           onClick={() => {
