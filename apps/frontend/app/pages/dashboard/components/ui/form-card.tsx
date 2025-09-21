@@ -21,31 +21,43 @@ import { MdDeleteOutline } from "react-icons/md";
 import { FaUserLock } from "react-icons/fa6";
 import { FaUserClock } from "react-icons/fa6";
 import { MdContentCopy } from "react-icons/md";
+import { IoCheckmark } from "react-icons/io5";
 
 import Image from "next/image";
+import { useState } from "react";
+import Link from "next/link";
 
 interface FormCardProps {
   formId: string;
   title: string;
   description: string;
   updatedAt: string;
+  isAcceptingResponses: boolean;
 }
 
-const FormCard = ({ formId, title, description, updatedAt }: FormCardProps) => {
+const FormCard = ({
+  formId,
+  title,
+  description,
+  updatedAt,
+  isAcceptingResponses,
+}: FormCardProps) => {
+  const [copyLink, setCopyLink] = useState(false);
   const date = new Date(updatedAt);
 
   // Extract date & time
   const formattedDate = date.toLocaleDateString("en-IN"); // 🇮🇳 dd/mm/yyyy
   const formattedTime = date.toLocaleTimeString("en-IN"); // hh:mm:ss AM/PM
-
-  //   temp var
-  const isPublic = true;
+  const formLink = `http://localhost:3000/form/${formId}/view`;
+  const formEditLink = `http://localhost:3000/form/${formId}/edit`;
   return (
     <Card className={cn("w-full h-64", interFont.className)}>
       <CardHeader>
-        <CardTitle className="text-lg font-semibold text-indigo-500">
-          {title}
-        </CardTitle>
+        <Link href={formEditLink} target="_blank">
+          <CardTitle className="text-lg font-semibold text-indigo-500 hover:underline cursor-pointer">
+            {title}
+          </CardTitle>
+        </Link>
         <CardDescription className="text-gray-900 text-xs">
           {description.length > 40
             ? `${description.slice(0, 40)}...`
@@ -66,7 +78,7 @@ const FormCard = ({ formId, title, description, updatedAt }: FormCardProps) => {
       </CardContent>
       <CardFooter className="w-full">
         <div className="flex w-full items-center justify-center gap-3">
-          {isPublic ? (
+          {!isAcceptingResponses ? (
             <Tooltip>
               <TooltipTrigger asChild>
                 <button className="flex items-center justify-center p-2 rounded-full hover:bg-indigo-50 transition-colors">
@@ -89,12 +101,22 @@ const FormCard = ({ formId, title, description, updatedAt }: FormCardProps) => {
               </TooltipContent>
             </Tooltip>
           )}
-          <button className="p-2 rounded-full hover:bg-gray-100 transition cursor-pointer">
-            <IoOpenOutline size={20} />
-          </button>
-
-          <button className="p-2 rounded-full hover:bg-gray-100 transition cursor-pointer">
-            <MdContentCopy size={20} />
+          <Link href={formLink} target="_blank">
+            <button className="p-2 rounded-full hover:bg-gray-100 transition cursor-pointer">
+              <IoOpenOutline size={20} />
+            </button>
+          </Link>
+          <button
+            className="p-2 rounded-full hover:bg-gray-100 transition cursor-pointer"
+            onClick={() => {
+              navigator.clipboard.writeText(formLink);
+              setCopyLink(true);
+              setTimeout(() => {
+                setCopyLink(false);
+              }, 1000);
+            }}
+          >
+            {copyLink ? <IoCheckmark size={20} /> : <MdContentCopy size={20} />}
           </button>
           <button className="p-2 rounded-full hover:bg-gray-100 text-red-500 transition cursor-pointer">
             <MdDeleteOutline size={20} />

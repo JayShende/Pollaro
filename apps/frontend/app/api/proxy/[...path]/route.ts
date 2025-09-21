@@ -34,7 +34,6 @@ async function proxyRequest(req: NextRequest, path: string[]) {
 
   // 🔐 Session check only for non-public routes
   if (!publicAllowed) {
-    console.log("publicAllowed", publicAllowed);
     const session = await auth();
     if (!session?.user?.id) {
       return NextResponse.json({ message: "Session Error" }, { status: 401 });
@@ -44,7 +43,6 @@ async function proxyRequest(req: NextRequest, path: string[]) {
 
   // 2. Construct backend URL
   const backendUrl = `${process.env.EXPRESS_URL}/${path.join("/")}`;
-  console.log("backendUrl", backendUrl);
   // 3. Prepare headers
   const headers: Record<string, string> = {
     "Content-Type": req.headers.get("content-type") || "application/json",
@@ -56,7 +54,6 @@ async function proxyRequest(req: NextRequest, path: string[]) {
   }
 
   try {
-    console.log("Inside try");
     const response = await axios({
       url: backendUrl,
       method: req.method,
@@ -71,8 +68,6 @@ async function proxyRequest(req: NextRequest, path: string[]) {
 
     return NextResponse.json(response.data, { status: response.status });
   } catch (error: any) {
-    console.log("Inside catch");
-    console.log("error", error);
     const status = error.response?.status || 500;
     const data = error.response?.data || { error: "Internal Proxy Error" };
     return NextResponse.json(data, { status });

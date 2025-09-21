@@ -161,3 +161,12 @@ export const toggleAcceptingResponses = async (formId: string) => {
   });
   return response.data;
 };
+
+// Delete Question API
+export const deleteQuestion = async (formId: string, questionId: string) => {
+  const response = await axios({
+    method: "delete",
+    url: `/${baseUrl}/question/delete/${formId}/${questionId}`,
+  });
+  return response.data;
+};

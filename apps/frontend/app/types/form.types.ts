@@ -3,6 +3,7 @@ export interface formMetaData {
   title: string;
   description: string;
   updatedAt: string;
+  acceptingResponses: boolean;
 }
 
 // Form Interface

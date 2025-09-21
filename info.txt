@@ -1,3 +1,9 @@
 http://localhost:3000/api/proxy/v1/api/v1/app/loggerAPI
 
 The Flow to Controllers and Services and Error Handleing Document This ASAP
+
+
+Add Delete Question Functionality
+    - form/edit beside each question 
+    - in settings we can add option to chnage theme 
+     

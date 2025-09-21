@@ -13,6 +13,7 @@ import {
   deleteFile,
   updateFormInfo,
   toggleAcceptingResponses,
+  deleteQuestion,
 } from "./api";
 import {
   addLongAnswerProps,
@@ -191,6 +192,32 @@ export function useAddFileUpload() {
   return useMutation({
     mutationFn: (data: addFileUploadProps) => addFileUpload(data),
     mutationKey: ["add_file_upload"],
+    onMutate: () => {
+      console.log("Mutatted");
+    },
+    onSettled: async (_, error, variables) => {
+      if (error) {
+        console.log(error);
+      }
+      await queryClient.invalidateQueries({
+        queryKey: ["form_questions", variables.formId],
+      });
+    },
+  });
+}
+
+interface deleteQuestionProps {
+  formId: string;
+  questionId: string;
+}
+
+// delete question mutation
+export function useDeleteQuestion() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ formId, questionId }: deleteQuestionProps) =>
+      deleteQuestion(formId, questionId),
+    mutationKey: ["delete_question"],
     onMutate: () => {
       console.log("Mutatted");
     },

@@ -74,6 +74,7 @@ const getFormMetaData = async (userId: string) => {
       title: true,
       description: true,
       updatedAt: true,
+      acceptingResponses: true,
     },
   });
   return metaData;

@@ -24,6 +24,7 @@ const DashboardMain = () => {
             title={form.title}
             description={form.description}
             updatedAt={form.updatedAt}
+            isAcceptingResponses={form.acceptingResponses}
           />
         ))}
       </div>
