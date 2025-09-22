@@ -1,4 +1,3 @@
-
 import { useGetFormInfo } from "@/app/services/queries";
 import {
   Card,
@@ -80,33 +79,36 @@ const FormHeaderCard = ({ formId }: FormHeaderCardProps) => {
   }
 
   return (
-    <div className="flex gap-x-2">
-      <Card className="pt-0 w-3xl">
+    <div className="flex flex-col sm:flex-row gap-x-2">
+      <Card className="pt-0 w-full sm:w-3xl">
         <div className="m-0 w-full h-3 bg-indigo-500 rounded-t-xl"></div>
-        <CardHeader>
+        <CardHeader className="pb-3">
           <CardTitle
             className={cn(
-              "text-3xl font-bold text-indigo-600",
+              "text-xl sm:text-3xl font-bold text-indigo-600 break-words",
               poppinsFont.className
             )}
           >
             {useGetFormInfoQuery.data.data.title}
           </CardTitle>
           <CardDescription
-            className={cn("font-semibold text-base", interFont.className)}
+            className={cn(
+              "font-semibold text-sm sm:text-base break-words",
+              interFont.className
+            )}
           >
             {data.description}
           </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="pb-3">
           <div>
-            <div className="flex gap-1 items-center">
-              <button className="p-1 rounded-full bg-gray-100">
+            <div className="flex gap-1 items-center flex-wrap">
+              <button className="p-1 rounded-full bg-gray-100 flex-shrink-0">
                 <BsPerson className="text-sm text-indigo-600" />
               </button>
               <span
                 className={cn(
-                  "text-sm font-normal text-gray-500",
+                  "text-xs sm:text-sm font-normal text-gray-500 break-all",
                   interFont.className
                 )}
               >
@@ -115,8 +117,8 @@ const FormHeaderCard = ({ formId }: FormHeaderCardProps) => {
             </div>
           </div>
         </CardContent>
-        <CardFooter>
-          <div className="flex flex-col gap-y-2">
+        <CardFooter className="pt-0">
+          <div className="flex flex-col gap-y-2 w-full">
             <span
               className={cn(
                 "text-xs font-normal text-red-500",
@@ -127,7 +129,7 @@ const FormHeaderCard = ({ formId }: FormHeaderCardProps) => {
             </span>
             <div
               className={cn(
-                "flex text-xs text-gray-500 gap-x-1",
+                "flex text-xs text-gray-500 gap-x-1 flex-wrap",
                 interFont.className
               )}
             >
@@ -137,16 +139,16 @@ const FormHeaderCard = ({ formId }: FormHeaderCardProps) => {
           </div>
         </CardFooter>
       </Card>
-      <div className="h-full bg-emerald-50 flex flex-col">
+      <div className="h-full bg-emerald-50 flex flex-col sm:flex-shrink-0">
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
           <DialogTrigger>
-            <div className="p-1 rounded-full hover:bg-indigo-100 cursor-pointer">
+            <div className="p-1 rounded-full hover:bg-indigo-100 cursor-pointer flex items-center justify-center">
               <FiEdit className="text-indigo-600 w-5 h-5" />
             </div>
           </DialogTrigger>
           <DialogContent
             className={cn(
-              "sm:max-w-[500px] border-indigo-200",
+              "sm:max-w-[500px] max-w-[95vw] border-indigo-200 mx-4",
               interFont.className
             )}
           >
@@ -154,11 +156,11 @@ const FormHeaderCard = ({ formId }: FormHeaderCardProps) => {
             <DialogHeader className="space-y-3">
               <DialogTitle
                 className={cn(
-                  "text-2xl font-bold text-indigo-600 flex items-center gap-2",
+                  "text-xl sm:text-2xl font-bold text-indigo-600 flex items-center gap-2",
                   poppinsFont.className
                 )}
               >
-                <FiEdit className="w-6 h-6" />
+                <FiEdit className="w-5 h-5 sm:w-6 sm:h-6" />
                 Edit Form Details
               </DialogTitle>
               <p className="text-sm text-gray-600">
@@ -222,18 +224,18 @@ const FormHeaderCard = ({ formId }: FormHeaderCardProps) => {
                   />
                 </div>
 
-                <DialogFooter className="gap-3 pt-4">
+                <DialogFooter className="gap-3 pt-4 flex-col sm:flex-row">
                   <DialogClose asChild>
                     <Button
                       variant="outline"
-                      className="border-gray-300 text-gray-700 hover:bg-gray-50"
+                      className="border-gray-300 text-gray-700 hover:bg-gray-50 w-full sm:w-auto"
                     >
                       Cancel
                     </Button>
                   </DialogClose>
                   <Button
                     type="submit"
-                    className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm"
+                    className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm w-full sm:w-auto"
                   >
                     Update Form
                   </Button>

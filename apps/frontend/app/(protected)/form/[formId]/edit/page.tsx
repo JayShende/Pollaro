@@ -29,7 +29,7 @@ const FormEdit = () => {
   return (
     <>
       {tab === "edit_form" && (
-        <div className="flex flex-col gap-y-6 max-w-4xl mx-auto p-6">
+        <div className="flex flex-col gap-y-4 sm:gap-y-6 max-w-4xl mx-auto p-3 sm:p-6">
           <FormHeaderCard formId={formId as string} />
           <QuestionsCards formId={formId as string} />
           <AddQuestion formId={formId as string} />

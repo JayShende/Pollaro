@@ -17,7 +17,7 @@ const QuestionsCards = ({ formId }: { formId: string }) => {
     return <div>Error...</div>;
   }
   return (
-    <div className="flex flex-col gap-4 w-3xl">
+    <div className="flex flex-col gap-4 w-full sm:w-3xl">
       {questionsData.data.data.questions.map((question: formQuestionsProps) => {
         if (question.type === questionType.SHORT_ANSWER) {
           return (

@@ -59,7 +59,7 @@ const Layout = async ({ children, params }: LayoutProps) => {
   }
   return (
     <TabsProvider>
-      <div className="w-full min-h-screen ">
+      <div className="w-full min-h-screen bg-gray-50">
         <HeaderFormEdit
           formId={formId}
           name={name}
@@ -68,7 +68,7 @@ const Layout = async ({ children, params }: LayoutProps) => {
           initials={initials}
           formInfo={formInfo}
         />
-        <main className="flex-1 overflow-y-auto ">{children}</main>
+        <main className="flex-1 overflow-y-auto pb-4">{children}</main>
       </div>
     </TabsProvider>
   );
