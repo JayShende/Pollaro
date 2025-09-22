@@ -35,10 +35,12 @@ interface FileUploadFieldProps {
   field: {
     value: string[];
     onChange: (value: string[]) => void;
+    name: string;
   };
   questionText: string;
   required: boolean;
   formId: string;
+  questionId: string;
 }
 
 const FileUploadField = ({
@@ -46,12 +48,16 @@ const FileUploadField = ({
   questionText,
   required,
   formId,
+  questionId,
 }: FileUploadFieldProps) => {
   const { uploading, progress, uploadedFiles, uploadFile, removeFile } =
-    useFileUpload(formId);
+    useFileUpload(formId, questionId);
   const [error, setError] = useState<string>("");
   const [disableUpload, setDisableUpload] = useState<boolean>(false);
   const deleteFileMutation = useDeleteFile();
+
+  // Create unique ID for this file upload field
+  const fieldId = `file-upload-${questionId}`;
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
@@ -112,7 +118,7 @@ const FileUploadField = ({
           <div className="flex items-center gap-4">
             <Input
               type="file"
-              id="file-upload"
+              id={fieldId}
               className="hidden"
               onChange={handleFileChange}
               disabled={uploading || disableUpload}
@@ -120,7 +126,7 @@ const FileUploadField = ({
             <Button
               type="button"
               variant="outline"
-              onClick={() => document.getElementById("file-upload")?.click()}
+              onClick={() => document.getElementById(fieldId)?.click()}
               disabled={uploading || disableUpload}
               className="shrink-0"
             >
@@ -426,6 +432,7 @@ const QuestionCard = ({ data, formId }: QuestionCardProps) => {
             questionText={data.text}
             required={data.required}
             formId={formId}
+            questionId={data.id}
           />
         )}
       />

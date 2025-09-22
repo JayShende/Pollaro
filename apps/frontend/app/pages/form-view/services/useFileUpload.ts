@@ -20,7 +20,7 @@ export interface UploadedFile {
   fileType: string;
 }
 
-export const useFileUpload = (formId: string) => {
+export const useFileUpload = (formId: string, questionId?: string) => {
   const [uploading, setUploading] = useState<boolean>(false);
   const [progress, setProgress] = useState<number>(0);
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
