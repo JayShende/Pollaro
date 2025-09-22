@@ -10,32 +10,10 @@ import {
 import { Button } from "@/components/ui/button";
 import { interFont, poppinsFont } from "@/fonts/font";
 import { cn } from "@/lib/utils";
-import { CheckCircle, ArrowLeft, Home, FileText } from "lucide-react";
+import { CheckCircle, Home } from "lucide-react";
 import Link from "next/link";
 
-interface ResponseConfirmProps {
-  formTitle?: string;
-  formDescription?: string;
-  submissionId?: string;
-  showBackButton?: boolean;
-  backButtonText?: string;
-  backButtonHref?: string;
-  showDashboardButton?: boolean;
-  dashboardButtonText?: string;
-  dashboardButtonHref?: string;
-}
-
-const ResponseConfirm = ({
-  formTitle = "Response Submitted Successfully",
-  formDescription = "Thank you for your response! Your submission has been recorded.",
-  submissionId,
-  showBackButton = false,
-  backButtonText = "Submit Another Response",
-  backButtonHref = "/dashboard",
-  showDashboardButton = false,
-  dashboardButtonText = "Go to Dashboard",
-  dashboardButtonHref = "/dashboard",
-}: ResponseConfirmProps) => {
+const ResponseConfirm = () => {
   return (
     <div className="flex flex-col gap-y-6 max-w-4xl mx-auto p-6 bg-[#EFEFEF] min-w-full min-h-screen items-center">
       <Card className="pt-0 w-[60%]">
@@ -55,7 +33,7 @@ const ResponseConfirm = ({
               poppinsFont.className
             )}
           >
-            {formTitle}
+            Response Submitted Successfully
           </CardTitle>
 
           <CardDescription
@@ -64,36 +42,12 @@ const ResponseConfirm = ({
               interFont.className
             )}
           >
-            {formDescription}
+            Thank you for your response! Your submission has been recorded.
           </CardDescription>
         </CardHeader>
 
         <CardContent className="text-center">
           <div className="space-y-4">
-            {submissionId && (
-              <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                <div className="flex items-center justify-center gap-2 mb-2">
-                  <FileText className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
-                  <p
-                    className={cn(
-                      "text-sm text-gray-600 dark:text-gray-300",
-                      interFont.className
-                    )}
-                  >
-                    Submission ID
-                  </p>
-                </div>
-                <p
-                  className={cn(
-                    "font-mono text-sm font-semibold text-indigo-600 dark:text-indigo-400 break-all",
-                    poppinsFont.className
-                  )}
-                >
-                  {submissionId}
-                </p>
-              </div>
-            )}
-
             <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
               <p
                 className={cn(
@@ -123,28 +77,13 @@ const ResponseConfirm = ({
         </CardContent>
 
         <CardFooter className="flex flex-col gap-4">
-          <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-            {showDashboardButton && (
-              <Button asChild className="flex items-center gap-2">
-                <Link href={dashboardButtonHref}>
-                  <Home className="h-4 w-4" />
-                  {dashboardButtonText}
-                </Link>
-              </Button>
-            )}
-
-            {showBackButton && (
-              <Button
-                asChild
-                variant="outline"
-                className="flex items-center gap-2"
-              >
-                <Link href={backButtonHref}>
-                  <ArrowLeft className="h-4 w-4" />
-                  {backButtonText}
-                </Link>
-              </Button>
-            )}
+          <div className="flex justify-center">
+            <Button asChild className="flex items-center gap-2">
+              <Link href="/dashboard">
+                <Home className="h-4 w-4" />
+                Go to Dashboard
+              </Link>
+            </Button>
           </div>
 
           <div className="text-center">
