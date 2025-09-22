@@ -1,17 +1,6 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
+import React, { useState } from "react";
+;
 import {
   Select,
   SelectTrigger,
@@ -35,15 +24,8 @@ import {
   Upload,
   Circle,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { interFont } from "@/fonts/font";
-import FileUpload from "./file_upload-form";
-import Checkbox from "./checkbox-form";
-import Dropdown from "./dropdown-form";
-import MultipleChoice from "./multiple_choice-form";
-import LongAnswer from "./long_answer-form";
-import ShortAnswer from "./short_answer-form";
 import QuestionCard from "./question-card";
+import { cn } from "@/lib/utils";
 
 interface GeneratedFormProps {
   formId: string;

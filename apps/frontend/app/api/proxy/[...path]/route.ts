@@ -7,6 +7,8 @@ import { auth } from "@/auth";
 const PUBLIC_ROUTES: string[] = [
   "/api/proxy/v1/form/getForm", // example
   "/api/proxy/v1/form/checkIfFormIsAcceptingResponses",
+  "/api/proxy/v1/file/upload",
+  "/api/proxy/v1/response/addResponse"
 ];
 
 // Check if a given path is public
@@ -32,6 +34,7 @@ async function proxyRequest(req: NextRequest, path: string[]) {
   const publicAllowed = isPublicRoute(nextUrl.pathname);
   let userId: string | null = null;
 
+  console.log("publicAllowed", publicAllowed);
   // 🔐 Session check only for non-public routes
   if (!publicAllowed) {
     const session = await auth();

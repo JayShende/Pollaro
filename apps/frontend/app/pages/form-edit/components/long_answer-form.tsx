@@ -21,8 +21,6 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { AlignLeft, CheckCircle, RotateCcw } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { interFont } from "@/fonts/font";
 import z from "zod";
 import { QuestionSchema } from "@/app/schemas/question.schema";
 import { useAddLongAnswer } from "@/app/services/mutations";

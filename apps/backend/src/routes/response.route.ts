@@ -8,7 +8,6 @@ const router: Router = express.Router();
 
 router.post(
   "/addResponse",
-  authMiddleware,
   validate(responseValidation.resposne),
   responseController.addFormResponse
 );

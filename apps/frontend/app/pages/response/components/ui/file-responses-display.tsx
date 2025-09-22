@@ -2,7 +2,7 @@ import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { interFont } from "@/fonts/font";
-import { Upload, File, Download, FileText } from "lucide-react";
+import { Upload, File, FileText } from "lucide-react";
 
 interface FileResponsesDisplayProps {
   question: {

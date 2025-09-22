@@ -12,7 +12,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import z from "zod";
 import { FileUploadSchema } from "@/app/schemas/question.schema";
 import { useAddFileUpload } from "@/app/services/mutations";
@@ -47,14 +46,6 @@ const FileUpload = ({
     },
   });
 
-  const fileTypes = [
-    { value: "image", label: "Images (PNG, JPG, GIF)" },
-    { value: "document", label: "Documents (PDF, DOC, DOCX)" },
-    { value: "spreadsheet", label: "Spreadsheets (XLS, XLSX, CSV)" },
-    { value: "presentation", label: "Presentations (PPT, PPTX)" },
-    { value: "text", label: "Text files (TXT, MD)" },
-    { value: "archive", label: "Archives (ZIP, RAR)" },
-  ];
 
   async function onSubmit(values: z.infer<typeof FileUploadSchema>) {
     try {

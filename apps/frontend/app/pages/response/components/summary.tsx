@@ -27,9 +27,7 @@ interface SummaryProps {
       answers: Array<{
         id: string;
         text?: string;
-        files: Array<{
-          files?: string[];
-        }>;
+        files: string[];
         createdAt: string;
         options: Array<{
           option: {
@@ -81,13 +79,13 @@ const Summary = ({ totalResponsesData }: SummaryProps) => {
           // Transform the answer to match our component interfaces
           const transformedAnswer = {
             text: answer.text,
-            files:
-              answer.files?.flatMap((fileObj) => fileObj.files || []) || [],
+            files: answer.files || [],
             options:
               answer.options && answer.options.length > 0
                 ? answer.options.map((opt) => ({ optionId: opt.option.id }))
                 : undefined,
           };
+
           grouped[question.id]?.push(transformedAnswer);
         });
       });
