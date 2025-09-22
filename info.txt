@@ -6,4 +6,6 @@ The Flow to Controllers and Services and Error Handleing Document This ASAP
 Add Delete Question Functionality
     - form/edit beside each question 
     - in settings we can add option to chnage theme 
-     
+
+When we Delete the Response
+	- Delete the Files Folder From the S3

@@ -15,7 +15,7 @@ const DashboardMain = () => {
   }
   return (
     <div className="w-full h-full">
-      <div className="grid grid-cols-6 gap-x-4 gap-y-6">
+      <div className="grid sm:grid-cols-6 grid-cols-2 gap-x-4 gap-y-6">
         <CreateNewFormCard />
         {getFormMetaData.data.data.map((form: formMetaData) => (
           <FormCard

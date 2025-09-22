@@ -14,6 +14,7 @@ import {
   updateFormInfo,
   toggleAcceptingResponses,
   deleteQuestion,
+  deleteForm,
 } from "./api";
 import {
   addLongAnswerProps,
@@ -248,6 +249,26 @@ export function useToggleAcceptingResponses() {
       }
       await queryClient.invalidateQueries({
         queryKey: ["form_accepting_responses", formId],
+      });
+    },
+  });
+}
+
+// delete the form with all the questions and options and responses
+export function useDeleteForm() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (formId: string) => deleteForm(formId),
+    mutationKey: ["delete_form"],
+    onMutate: () => {
+      console.log("Mutatted");
+    },
+    onSettled: async (_, error) => {
+      if (error) {
+        console.log(error);
+      }
+      await queryClient.invalidateQueries({
+        queryKey: ["form_metaData"],
       });
     },
   });

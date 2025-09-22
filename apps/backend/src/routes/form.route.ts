@@ -48,4 +48,6 @@ router.put(
   formController.updateAcceptingResponses
 );
 
+router.delete("/deleteForm/:formId", authMiddleware, formController.deleteForm);
+
 export default router;

@@ -283,6 +283,39 @@ const updateAcceptingResponses = async (formId: string, userId: string) => {
   }
 };
 
+// delete the form with all the questions and options and responses
+
+const deleteForm = async (formId: string, userId: string) => {
+  try {
+    // check if the form exists
+    const form = await client.form.findUnique({
+      where: { id: formId },
+    });
+
+    if (form === null) {
+      throw new ApiError(httpStatus.NOT_FOUND, "Form Not Found");
+    }
+    // check if the user is the owner of the form
+    if (form.ownerId !== userId) {
+      throw new ApiError(httpStatus.UNAUTHORIZED, "You Don't Own The Form");
+    }
+
+    // proceed with the deletion
+    const deletedForm = await client.form.delete({
+      where: { id: formId },
+    });
+    return deletedForm;
+  } catch (error) {
+    if (error instanceof ApiError) {
+      throw error;
+    }
+    throw new ApiError(
+      httpStatus.INTERNAL_SERVER_ERROR,
+      "Internal Server Error"
+    );
+  }
+};
+
 export default {
   createForm,
   getForm,
@@ -293,4 +326,5 @@ export default {
   getFormQuestions,
   checkIfFormIsAcceptingResponses,
   updateAcceptingResponses,
+  deleteForm,
 };

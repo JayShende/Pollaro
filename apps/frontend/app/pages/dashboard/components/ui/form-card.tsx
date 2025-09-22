@@ -1,4 +1,3 @@
-
 import {
   Card,
   CardContent,
@@ -15,6 +14,18 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+
 import { IoOpenOutline } from "react-icons/io5";
 import { MdDeleteOutline } from "react-icons/md";
 import { FaUserLock } from "react-icons/fa6";
@@ -25,6 +36,8 @@ import { IoCheckmark } from "react-icons/io5";
 import Image from "next/image";
 import { useState } from "react";
 import Link from "next/link";
+import { useDeleteForm } from "@/app/services/mutations";
+import { toast } from "sonner";
 
 interface FormCardProps {
   formId: string;
@@ -43,17 +56,23 @@ const FormCard = ({
 }: FormCardProps) => {
   const [copyLink, setCopyLink] = useState(false);
   const date = new Date(updatedAt);
-
+  const deleteFormMutation = useDeleteForm();
   // Extract date & time
   const formattedDate = date.toLocaleDateString("en-IN"); // 🇮🇳 dd/mm/yyyy
   const formattedTime = date.toLocaleTimeString("en-IN"); // hh:mm:ss AM/PM
   const formLink = `http://localhost:3000/form/${formId}/view`;
   const formEditLink = `http://localhost:3000/form/${formId}/edit`;
+
+  async function deleteForm() {
+    await deleteFormMutation.mutateAsync(formId);
+    toast.success("Form deleted successfully");
+  }
+
   return (
     <Card className={cn("w-full h-64", interFont.className)}>
       <CardHeader>
         <Link href={formEditLink} target="_blank">
-          <CardTitle className="text-lg font-semibold text-indigo-500 hover:underline cursor-pointer">
+          <CardTitle className="sm:text-lg text-md font-semibold text-indigo-500 hover:underline cursor-pointer">
             {title}
           </CardTitle>
         </Link>
@@ -117,9 +136,27 @@ const FormCard = ({
           >
             {copyLink ? <IoCheckmark size={20} /> : <MdContentCopy size={20} />}
           </button>
-          <button className="p-2 rounded-full hover:bg-gray-100 text-red-500 transition cursor-pointer">
-            <MdDeleteOutline size={20} />
-          </button>
+
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <button className="p-2 rounded-full hover:bg-gray-100 text-red-500 transition cursor-pointer">
+                <MdDeleteOutline size={20} />
+              </button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone. This will permanently delete
+                  your form and remove your data from our servers.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={deleteForm}>Delete</AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
       </CardFooter>
     </Card>

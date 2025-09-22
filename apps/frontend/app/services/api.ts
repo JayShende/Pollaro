@@ -179,3 +179,12 @@ export const getTotalResponses = async (formId: string) => {
   });
   return response.data;
 };
+
+// delete the form with all the questions and options and responses
+export const deleteForm = async (formId: string) => {
+  const response = await axios({
+    method: "delete",
+    url: `/${baseUrl}/form/deleteForm/${formId}`,
+  });
+  return response.data;
+};

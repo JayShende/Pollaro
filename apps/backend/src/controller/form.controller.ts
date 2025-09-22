@@ -189,6 +189,29 @@ const updateAcceptingResponses = async (req: Request, res: Response) => {
     );
   }
 };
+
+// delete the form with all the questions and options and responses
+const deleteForm = async (req: Request, res: Response) => {
+  try {
+    const { formId } = req.params;
+    const form = await formService.deleteForm(
+      formId as string,
+      req.user?.userId!
+    );
+    return response(res, HttpStatus.OK, "Form deleted SuccessFully", form);
+  } catch (error) {
+    if (error instanceof ApiError) {
+      return response(res, error.statusCode, error.message, null);
+    }
+    return response(
+      res,
+      HttpStatus.INTERNAL_SERVER_ERROR,
+      "Internal Server Error",
+      null
+    );
+  }
+};
+
 export default {
   create,
   getForm,
@@ -199,4 +222,5 @@ export default {
   getFormQuestions,
   checkIfFormIsAcceptingResponses,
   updateAcceptingResponses,
+  deleteForm,
 };
