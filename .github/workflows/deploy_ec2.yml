@@ -3,7 +3,7 @@ name: Next JS Public Repo Deploy To the EC2 Via CI-Cd and Github Actions
 on:
   push:
     branches:
-      - main
+      - prdouction
 
 jobs:
   Deploy:
