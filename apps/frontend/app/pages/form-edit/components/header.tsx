@@ -58,7 +58,7 @@ const HeaderFormEdit = ({
   }
   const isAcceptingResponses = isAcceptingResponsesQuery.data.data;
 
-  const formLink = `http://localhost:3000/form/${formId}/view`;
+  const formLink = `${process.env.NEXT_PUBLIC_APP_URL}/form/${formId}/view`;
 
   async function toggleAcceptingResponses() {
     try {

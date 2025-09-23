@@ -8,7 +8,8 @@ const PUBLIC_ROUTES: string[] = [
   "/api/proxy/v1/form/getForm", // example
   "/api/proxy/v1/form/checkIfFormIsAcceptingResponses",
   "/api/proxy/v1/file/upload",
-  "/api/proxy/v1/response/addResponse"
+  "/api/proxy/v1/response/addResponse",
+  "/api/proxy/v1/file/delete",
 ];
 
 // Check if a given path is public

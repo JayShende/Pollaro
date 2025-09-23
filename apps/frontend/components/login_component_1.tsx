@@ -37,7 +37,7 @@ const LoginComponent = () => {
           <span>Github</span>
         </Button>
 
-        <Button
+        {/* <Button
           className="w-full my-2 cursor-pointer"
           variant="secondary"
           onClick={() => {
@@ -46,7 +46,7 @@ const LoginComponent = () => {
         >
           <FcGoogle />
           <span>Google</span>
-        </Button>
+        </Button> */}
       </CardHeader>
     </Card>
   );
