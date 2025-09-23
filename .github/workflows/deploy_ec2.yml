@@ -22,6 +22,8 @@ jobs:
           port: 22
           script: |
             echo "📦 Starting SSH Deployment..."
+            set -e  # stop on error
+            set -x  # print commands before running them
 
             # Navigate to your app directory
             cd ${{ secrets.APP_DIR }}
@@ -36,6 +38,6 @@ jobs:
             pnpm run build
 
             echo "🚀 Restarting app using PM2..."
-            pm2 restart "pollaro" 
+            pm2 restart pollaro || pm2 start "pnpm start" --name pollaro
 
-            echo "🎉 Deployment SuccessFull!"
+            echo "🎉 Deployment Successful!"

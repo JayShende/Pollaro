@@ -101,7 +101,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 sm:mb-6 leading-tight px-2">
-              Testing CICD with Github Actions and Deploying to EC2 Build Forms & Polls That{" "}
+              Test New Script Build Forms & Polls That{" "}
               <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
                 People Love to Answer
               </span>
