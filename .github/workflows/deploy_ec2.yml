@@ -1,0 +1,41 @@
+name: Next JS Public Repo Deploy To the EC2 Via CI-Cd and Github Actions
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  Deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout The Code
+        uses: actions/checkout@v2
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SECRET_KEY }}
+          port: 22
+          script: |
+            echo "📦 Starting SSH Deployment..."
+
+            # Navigate to your app directory
+            cd ${{ secrets.APP_DIR }}
+
+            # Pull latest changes
+            git pull
+
+            echo "📥 Installing dependencies..."
+            pnpm install
+
+            echo "🔧 Building the project..."
+            pnpm run build
+
+            echo "🚀 Restarting app using PM2..."
+            pm2 restart "pollaro" 
+
+            echo "🎉 Deployment SuccessFull!"
