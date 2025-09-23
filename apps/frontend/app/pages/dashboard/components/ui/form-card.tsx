@@ -60,8 +60,8 @@ const FormCard = ({
   // Extract date & time
   const formattedDate = date.toLocaleDateString("en-IN"); // 🇮🇳 dd/mm/yyyy
   const formattedTime = date.toLocaleTimeString("en-IN"); // hh:mm:ss AM/PM
-  const formLink = `http://localhost:3000/form/${formId}/view`;
-  const formEditLink = `http://localhost:3000/form/${formId}/edit`;
+  const formLink = `${process.env.NEXT_PUBLIC_APP_URL}/form/${formId}/view`;
+  const formEditLink = `${process.env.NEXT_PUBLIC_APP_URL}/form/${formId}/edit`;
 
   async function deleteForm() {
     await deleteFormMutation.mutateAsync(formId);
