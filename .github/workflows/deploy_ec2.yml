@@ -38,7 +38,7 @@ jobs:
 
             # Pull latest changes
             git pull
-
+            
             echo "📥 Installing dependencies..."
             pnpm install
 

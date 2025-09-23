@@ -23,4 +23,3 @@ app.listen(Number(PORT), () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
 
-// testing build speed when FE is cached
