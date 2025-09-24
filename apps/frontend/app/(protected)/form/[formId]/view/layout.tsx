@@ -18,9 +18,7 @@ export const metadata: Metadata = {
       },
     ],
   },
-  icons: {
-    icon: "https://d2umaa5a4grwi8.cloudfront.net/projects/pollaro/assets/logo_2.png",
-  },
+
 };
 const Layout = ({ children }: LayoutProps) => {
   return (

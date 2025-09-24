@@ -27,8 +27,16 @@ export const metadata: Metadata = {
     ],
   },
   icons: {
-    icon: "https://d2umaa5a4grwi8.cloudfront.net/projects/pollaro/assets/logo_2.png",
+    icon: [
+      {
+        url: "/favicon.ico",
+        rel: "icon",
+        type:"image/x-icon",
+        sizes: "32x32", // optional but good
+      },
+    ],
   },
+  
 };
 
 export default function RootLayout({
