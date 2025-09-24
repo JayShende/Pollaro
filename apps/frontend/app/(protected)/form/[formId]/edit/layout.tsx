@@ -5,12 +5,30 @@ import React, { ReactNode } from "react";
 import { cookies } from "next/headers";
 import axios from "axios";
 import { TabsProvider } from "@/app/pages/response/components/tabs-provider";
+import { Metadata } from "next";
 
 interface LayoutProps {
   children: ReactNode;
   params: Promise<{ formId: string }>;
 }
 
+export const metadata: Metadata = {
+  title: "Pollaro",
+  description: "Build Forms & Polls That People Love to Answer",
+  openGraph: {
+    images: [
+      {
+        url: "https://d2umaa5a4grwi8.cloudfront.net/projects/pollaro/assets/logo_2.png",
+        width: 800,
+        height: 600,
+        alt: "Pollaro",
+      },
+    ],
+  },
+  icons: {
+    icon: "https://d2umaa5a4grwi8.cloudfront.net/projects/pollaro/assets/logo_2.png",
+  },
+};
 const Layout = async ({ children, params }: LayoutProps) => {
   const formId = (await params).formId;
   const session = await auth();
