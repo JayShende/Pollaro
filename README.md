@@ -162,20 +162,17 @@ Pollaro/
    git clone https://github.com/yourusername/pollaro.git
    cd pollaro
    ```
-
 2. **Install dependencies**
 
    ```bash
    pnpm install
    ```
-
 3. **Set up environment variables**
 
    ```bash
    cp .env.example .env
    # Edit .env with your configuration
    ```
-
 4. **Set up the database**
 
    ```bash
@@ -185,7 +182,6 @@ Pollaro/
    # Run database migrations
    pnpm db:migrate
    ```
-
 5. **Start the development servers**
 
    ```bash
@@ -196,8 +192,8 @@ Pollaro/
    pnpm dev --filter=frontend
    pnpm dev --filter=backend
    ```
-
 6. **Access the application**
+
    - Frontend: http://localhost:3000
    - Backend API: http://localhost:8000
 
